@@ -194,7 +194,7 @@ def display_summary_numbers(total_approved, total_applied, data_mode):
             with col2:
                 st.markdown(
                     "<div style='text-align: center;'>"
-                    f"<h3>✅ {data_mode} Total Approvals</h3>"
+                    f"<h3>✅ {data_mode} Approvals</h3>"
                     f"<p style='font-size: 32px;'>{total_approved}</p>"
                     "</div>",
                     unsafe_allow_html=True,
@@ -330,7 +330,7 @@ def functional_bar_charts_formatting(chart):
 
 def radio_button():
     data_type = st.radio(
-        "Select the type of data you want to see",
+        "",
         ["Overall Numbers", "Daily Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
@@ -364,6 +364,11 @@ def main():
         "<hr style='border: 1px solid #000; width: 100%;'>",
         unsafe_allow_html=True
     )
+
+    st.markdown("<div style='text-align: left;'>"
+                f"<h4>Select the type of data you want to view</h4>"
+                "</div>",
+                unsafe_allow_html=True,)
     data_mode = radio_button()
     # Set interval to 5 minutes
     st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
