@@ -175,8 +175,7 @@ def total_points(data):
 # display summary details (on the top of the page)
 def display_summary_numbers(total_approved, total_applied):
     # Calculate the conversion rate, with a check for division by zero
-            conversion_rate = round(
-                total_approved / total_applied, 2) if total_applied != 0 else 0
+            conversion_rate = round(total_approved / total_applied, 2) if total_applied != 0 else 0
 
             # Define a layout with two columns
             col1, col2, col3 = st.columns([1, 1, 1])
@@ -206,7 +205,7 @@ def display_summary_numbers(total_approved, total_applied):
                 st.markdown(
                     "<div style='text-align: center;'>"
                     f"<h3>📊 Overall Applied to Approved Coversion Rate</h3>"
-                    f"<p style='font-size: 32px;'>{conversion_rate*100} %</p>"
+                    f"<p style='font-size: 32px;'>{round(conversion_rate*100,2)} %</p>"
                     "</div>",
                     unsafe_allow_html=True,
                 )
@@ -378,22 +377,23 @@ def main():
 
             display_summary_numbers(total_approved, total_applied)
 
-            st.subheader('🔥Leaderboard')
 
             data_type = st.radio(
                 "Select the type of data you want to see",
                 ["Overall Numbers", "Daily Numbers"],
                 captions=[
-                    "Showing Total Data From 11.11.2024 to Today",
+                    f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
                     f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
                 ],
                 horizontal=True
             )
 
             if data_type == "Overall Numbers":
-                pass
+                data_mode = "Total"
+                st.subheader('🔥Leaderboard')
             elif data_type == "Daily Numbers":
-                pass
+                data_mode = "Daily"
+                st.subheader(f'🔥{data_mode}Leaderboard')
 
             # Display the leaderboard table
             display_leaderboard_table(df_combined)
