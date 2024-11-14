@@ -113,7 +113,7 @@ def applied_bar_chart_and_data(data, data_mode):
     df_entity_applied_total.rename(columns={'index': 'Entity'}, inplace=True)
 
     # Create a colored bar chart using Plotly Express
-    fig_applied = px.bar(df_entity_applied_total, x='Entity', y='Total_Applied', title='🌍 {data_mode} Applications by Entity', labels={
+    fig_applied = px.bar(df_entity_applied_total, x='Entity', y='Total_Applied', title=f'🌍 {data_mode} Applications by Entity', labels={
                          'Entity': 'Entity', 'Total_Applied': 'Applications'}, color='Entity')
 
     # Hide the legend
@@ -132,7 +132,7 @@ def approved_bar_chart_and_data(data, data_mode):
     df_entity_approved_total.reset_index(inplace=True)
     df_entity_approved_total.rename(columns={'index': 'Entity'}, inplace=True)
     # Create a colored bar chart using Plotly Express
-    fig_approved = px.bar(df_entity_approved_total, x='Entity', y='Total_Approved', title='✅ {data_mode} Approvals by Entity', labels={
+    fig_approved = px.bar(df_entity_approved_total, x='Entity', y='Total_Approved', title=f'✅ {data_mode} Approvals by Entity', labels={
                           'Entity': 'Entity', 'Total_Approved': 'Approvals'}, color='Entity')
     # Hide the legend
     functional_bar_charts_formatting(fig_approved)
@@ -154,7 +154,7 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     apl_to_apd['APL_to_APD'] = apl_to_apd['APL_to_APD'].replace(
         [float('inf'), float('nan')], 0)
 
-    fig_apl_to_apd = px.bar(apl_to_apd, x='Entity', y='APL_to_APD', title='📊 {data_mode} Applied to Approved Ratio by Entity', labels={
+    fig_apl_to_apd = px.bar(apl_to_apd, x='Entity', y='APL_to_APD', title=f'📊 {data_mode} Applied to Approved Ratio by Entity', labels={
                             'Entity': 'Entity', 'APL_to_APD': '%Applied to Approved'}, color='Entity')
 
     functional_bar_charts_formatting(fig_apl_to_apd)
@@ -327,6 +327,25 @@ def functional_bar_charts_formatting(chart):
         # Y-axis tick font size
         yaxis_tickfont=dict(size=14, color="#31333F"),
         showlegend=False)
+
+def radio_button():
+    data_type = st.radio(
+        "Select the type of data you want to see",
+        ["Overall Numbers", "Daily Numbers"],
+        captions=[
+            f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
+            f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
+        ],
+        horizontal=True
+    )
+
+    if data_type == "Overall Numbers":
+        data_mode = "Total"
+    elif data_type == "Daily Numbers":
+        data_mode = "Daily"
+
+    return data_mode
+
 # Main Streamlit app
 
 def main():
@@ -358,24 +377,9 @@ def main():
     if data is not None:
 
         # Check if the 'Entity' column exists in the DataFrame
-        if 'Entity' in data.columns:
+        if 'Entity' in data.columns:  
 
-            data_type = st.radio(
-                "Select the type of data you want to see",
-                ["Overall Numbers", "Daily Numbers"],
-                captions=[
-                    f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
-                    f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
-                ],
-                horizontal=True
-            )
-
-            if data_type == "Overall Numbers":
-                data_mode = "Total"
-                st.subheader('🔥Leaderboard')
-            elif data_type == "Daily Numbers":
-                data_mode = "Daily"
-                st.subheader(f'🔥{data_mode} Leaderboard')
+            data_mode = radio_button()              
 
             # calculation of leaderboard items
             fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
@@ -394,6 +398,8 @@ def main():
 
 
             display_summary_numbers(total_approved, total_applied, data_mode)
+
+            st.subheader(f'🔥{data_mode} Leaderboard')
 
             # Display the leaderboard table
             display_leaderboard_table(df_combined)
