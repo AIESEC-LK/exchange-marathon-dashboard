@@ -405,7 +405,7 @@ def main():
             st.subheader(f'🔥{data_mode} Leaderboard')
 
             # Display the leaderboard table
-            display_leaderboard_table(df_combined)
+            display_leaderboard_table(df_combined, data_mode)
 
             st.divider()
 
