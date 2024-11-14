@@ -386,7 +386,7 @@ def main():
             fig_approved, df_entity_approved_total = approved_bar_chart_and_data(data, data_mode)
             fig_apltoapd, df_entity_apltoapd_total = applied_to_approved_ratio_bar_chart_and_data(
                 df_entity_approved_total, df_entity_applied_total, data_mode)
-            df_ranks = total_points(data)
+            df_ranks = total_points(data, data_mode)
 
             df_combined = df_entity_applied_total.merge(
                 df_entity_approved_total, on='Entity').merge(
