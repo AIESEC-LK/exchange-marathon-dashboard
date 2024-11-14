@@ -122,7 +122,7 @@ def applied_bar_chart_and_data(data, data_mode):
     return fig_applied, df_entity_applied_total
 
 # Function to create total approvals bar chart and data
-def approved_bar_chart_and_data(data):
+def approved_bar_chart_and_data(data, data_mode):
     # Calculate total 'Approved' related to each entity
     entity_approved_total = calculate_total_approved(data)
 
@@ -140,7 +140,7 @@ def approved_bar_chart_and_data(data):
     return fig_approved, df_entity_approved_total
 
 # Function to create applied to approved ratio bar chart and data
-def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_apl_total):
+def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_apl_total, data_mode):
     # calculate the ratio of applied to approved (APD/APL)
     # divide the pd.dataframe of total approved by total applied
 
