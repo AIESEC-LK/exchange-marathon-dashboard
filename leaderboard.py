@@ -20,11 +20,11 @@ def load_data(sheet_url):
         return None
 
 # Function to calculate the total 'Applied' related to each entity
-def calculate_total_applied(df):
+def calculate_total_applied(df, data_mode):
     entity_applied_total = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        applied = row['Applied']
+        applied = row[f'{data_mode} Applied']
         if entity not in entity_applied_total:
             entity_applied_total[entity] = applied
         else:
@@ -32,11 +32,11 @@ def calculate_total_applied(df):
     return entity_applied_total
 
 # Function to calculate the total 'Approved' related to each entity
-def calculate_total_approved(df):
+def calculate_total_approved(df, data_mode):
     entity_approved_total = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        approved = row['Approved']
+        approved = row[f'{data_mode} Approved']
         if entity not in entity_approved_total:
             entity_approved_total[entity] = approved
         else:
@@ -44,11 +44,11 @@ def calculate_total_approved(df):
     return entity_approved_total
 
 # Function to calculate the total points of each entity
-def calulate_total_points(df):
+def calulate_total_points(df, data_mode):
     entity_sum = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        total = row['Total']
+        total = row[f'{data_mode} Total']
         if entity not in entity_sum:
             entity_sum[entity] = total
         else:
@@ -84,7 +84,7 @@ def count_applied_to_approved_ratio(df, selected_function):
 # Function to caulculate ranks and display medals for top 3 ranks
 def display_score_ranks(df):
     # Calculate ranks based on scores
-    df_with_ranks = df.sort_values(by='Total', ascending=False)
+    df_with_ranks = df.sort_values(by=f'Total', ascending=False)
     df_with_ranks['Rank'] = range(1, len(df_with_ranks) + 1)
 
     # Replace rank number with - if the total is 0
@@ -104,7 +104,7 @@ def display_score_ranks(df):
 # Function to create total applications bar chart and data
 def applied_bar_chart_and_data(data, data_mode):
     # Calculate total 'Applied' related to each entity
-    entity_applied_total = calculate_total_applied(data)
+    entity_applied_total = calculate_total_applied(data, data_mode)
 
     # Convert dictionary to DataFrame
     df_entity_applied_total = pd.DataFrame.from_dict(
@@ -124,7 +124,7 @@ def applied_bar_chart_and_data(data, data_mode):
 # Function to create total approvals bar chart and data
 def approved_bar_chart_and_data(data, data_mode):
     # Calculate total 'Approved' related to each entity
-    entity_approved_total = calculate_total_approved(data)
+    entity_approved_total = calculate_total_approved(data, data_mode)
 
     # Convert dictionary to DataFrame
     df_entity_approved_total = pd.DataFrame.from_dict(
@@ -211,7 +211,7 @@ def display_summary_numbers(total_approved, total_applied, data_mode):
                 )
 
 # Function to display the leaderboard table
-def display_leaderboard_table(df):
+def display_leaderboard_table(df, data_mode):
     # Apply custom CSS for styling
     st.markdown(
         """
@@ -396,13 +396,13 @@ def main():
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
 
-
+            # Display the summary numbers (total applications, total approvals, and conversion rate)
             display_summary_numbers(total_approved, total_applied, data_mode)
 
             st.subheader(f'🔥{data_mode} Leaderboard')
 
             # Display the leaderboard table
-            display_leaderboard_table(df_combined)
+            display_leaderboard_table(df_combined, data_mode)
 
             st.divider()
 
