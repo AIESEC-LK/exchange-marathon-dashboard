@@ -19,43 +19,12 @@ def load_data(sheet_url):
         st.error(f"Error loading data: {str(e)}")
         return None
 
-# Function to create a bar chart based on the specified metric
-
-
-def create_bar_chart_seperate(df, entity, metric, title):
-    filtered_df = df[df['Entity'] == entity]
-    fig = px.bar(filtered_df, x='Function', y=metric, title=title, labels={
-                 'Function': 'Function', 'Entity': 'Entity', metric: metric}, color='Function')
-    return fig
-
-# Function to create a bar chart based on the total points of each entity
-
-
-def create_bar_chart(entity_sum):
-    # Convert entity sum dictionary to DataFrame
-    df_entity_sum = pd.DataFrame.from_dict(entity_sum, orient='index')
-
-    # Reset index to make entity a column instead of index
-    df_entity_sum.reset_index(inplace=True)
-    df_entity_sum.rename(columns={'index': 'Entity'}, inplace=True)
-
-    # Create a bar chart using Plotly Express
-    fig = px.bar(df_entity_sum, x='Entity', y='Total', title='Total Score', labels={
-                 'Entity': 'Entity', 'Total': 'Total Points'}, color='Entity')
-
-    # Hide the legend
-    fig.update_layout(showlegend=False)
-
-    return fig
-
 # Function to calculate the total 'Applied' related to each entity
-
-
-def calculate_total_applied(df):
+def calculate_total_applied(df, data_mode):
     entity_applied_total = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        applied = row['Applied']
+        applied = row[f'{data_mode} Applied']
         if entity not in entity_applied_total:
             entity_applied_total[entity] = applied
         else:
@@ -63,13 +32,11 @@ def calculate_total_applied(df):
     return entity_applied_total
 
 # Function to calculate the total 'Approved' related to each entity
-
-
-def calculate_total_approved(df):
+def calculate_total_approved(df, data_mode):
     entity_approved_total = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        approved = row['Approved']
+        approved = row[f'{data_mode} Approved']
         if entity not in entity_approved_total:
             entity_approved_total[entity] = approved
         else:
@@ -77,13 +44,11 @@ def calculate_total_approved(df):
     return entity_approved_total
 
 # Function to calculate the total points of each entity
-
-
-def calulate_total_points(df):
+def calulate_total_points(df, data_mode):
     entity_sum = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        total = row['Total']
+        total = row[f'{data_mode} Total']
         if entity not in entity_sum:
             entity_sum[entity] = total
         else:
@@ -91,83 +56,36 @@ def calulate_total_points(df):
     return entity_sum
 
 # Function to calculate the count of 'Applied' related to each entity based on the selected function
-
-
-def count_applied_by_entity(df, selected_function):
+def count_applied_by_entity(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     applied_counts = filtered_df.groupby(
-        'Entity')['Applied'].sum().reset_index()
-    applied_counts.rename(columns={'Applied': 'Count_Applied'}, inplace=True)
+        'Entity')[f'{data_mode} Applied'].sum().reset_index()
+    applied_counts.rename(columns={f'{data_mode} Applied': 'Count_Applied'}, inplace=True)
     return applied_counts
 
 # Function to calculate the count of 'Approved' related to each entity based on the selected function
-
-
-def count_approved_by_entity(df, selected_function):
+def count_approved_by_entity(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     approved_counts = filtered_df.groupby(
-        'Entity')['Approved'].sum().reset_index()
+        'Entity')[f'{data_mode} Approved'].sum().reset_index()
     approved_counts.rename(
-        columns={'Approved': 'Count_Approved'}, inplace=True)
+        columns={f'{data_mode} Approved': 'Count_Approved'}, inplace=True)
     return approved_counts
 
 # Function to calculate the %applied to approved ratio for each entity on the selected function
-
-
-def count_applied_to_approved_ratio(df, selected_function):
+def count_applied_to_approved_ratio(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     applied_to_approved_ratio = filtered_df.groupby(
-        'Entity')['%APL-APD'].sum().reset_index()
+        'Entity')[f'{data_mode} %APL-APD'].sum().reset_index()
     applied_to_approved_ratio.rename(
-        columns={'%APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
+        columns={f'{data_mode} %APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
 
-
-def calculate_approval_ranks(df):
-    # Sort the DataFrame by 'Total_Approved' column in descending order
-    df_sorted = df.sort_values(by='Total_Approved', ascending=False)
-    # Add a new column 'Rank' to store the ranks
-    df_sorted['Rank'] = range(1, len(df_sorted) + 1)
-
-    return df_sorted
-
-
-def calculate_ranks_on_score(df):
-    # Sort the DataFrame by 'Total' column in descending order
-    df_sorted = df.sort_values(by='Total', ascending=False)
-    # Add a new column 'Rank' to store the ranks
-    df_sorted['Rank'] = range(1, len(df_sorted) + 1)
-
-    return df_sorted
-
-
-# def display_approval_ranks(df):
-    # Calculate ranks based on approvals
-    df_with_ranks = calculate_approval_ranks(df)
-
-    # Drop the index column
-    df_without_index = df_with_ranks[['Rank', 'Entity', 'Total_Approved']]
-    # Rename the column 'Total_Approved' to 'Total Approvals'
-    df_with_ranks.rename(
-        columns={'Total_Approved': 'Total Approvals'}, inplace=True)
-
-    # Apply gold, silver, and bronze medals to the 'Entity' column
-    df_with_ranks['Entity'] = df_with_ranks.apply(lambda row:
-                                                  f"🥇 {row['Entity']}" if row['Rank'] == 1 else
-                                                  f"🥈 {row['Entity']}" if row['Rank'] == 2 else
-                                                  f"🥉 {row['Entity']}" if row['Rank'] == 3 else
-                                                  row['Entity'], axis=1)
-
-    # Calculate the total of the 'Total Approvals' column
-    tot_ap_approvals = df_with_ranks['Total Approvals'].sum()
-
-    # display the leaderboard section
-    display_leaderboard_table(df_with_ranks, tot_ap_approvals)
-
-
+# Function to caulculate ranks and display medals for top 3 ranks
 def display_score_ranks(df):
     # Calculate ranks based on scores
-    df_with_ranks = calculate_ranks_on_score(df)
+    df_with_ranks = df.sort_values(by=f'Total', ascending=False)
+    df_with_ranks['Rank'] = range(1, len(df_with_ranks) + 1)
 
     # Replace rank number with - if the total is 0
     df_with_ranks['Rank'] = df_with_ranks.apply(lambda row:
@@ -183,10 +101,10 @@ def display_score_ranks(df):
     # display the leaderboard section
     return df_with_ranks
 
-
-def applied_bar_chart_and_data(data):
+# Function to create total applications bar chart and data
+def applied_bar_chart_and_data(data, data_mode):
     # Calculate total 'Applied' related to each entity
-    entity_applied_total = calculate_total_applied(data)
+    entity_applied_total = calculate_total_applied(data, data_mode)
 
     # Convert dictionary to DataFrame
     df_entity_applied_total = pd.DataFrame.from_dict(
@@ -195,27 +113,18 @@ def applied_bar_chart_and_data(data):
     df_entity_applied_total.rename(columns={'index': 'Entity'}, inplace=True)
 
     # Create a colored bar chart using Plotly Express
-    fig_applied = px.bar(df_entity_applied_total, x='Entity', y='Total_Applied', title='🌍 Total Applications by Entity', labels={
+    fig_applied = px.bar(df_entity_applied_total, x='Entity', y='Total_Applied', title=f'🌍 {data_mode} Applications by Entity', labels={
                          'Entity': 'Entity', 'Total_Applied': 'Applications'}, color='Entity')
 
     # Hide the legend
-    fig_applied.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_applied)
 
     return fig_applied, df_entity_applied_total
 
-
-def approved_bar_chart_and_data(data):
+# Function to create total approvals bar chart and data
+def approved_bar_chart_and_data(data, data_mode):
     # Calculate total 'Approved' related to each entity
-    entity_approved_total = calculate_total_approved(data)
+    entity_approved_total = calculate_total_approved(data, data_mode)
 
     # Convert dictionary to DataFrame
     df_entity_approved_total = pd.DataFrame.from_dict(
@@ -223,24 +132,15 @@ def approved_bar_chart_and_data(data):
     df_entity_approved_total.reset_index(inplace=True)
     df_entity_approved_total.rename(columns={'index': 'Entity'}, inplace=True)
     # Create a colored bar chart using Plotly Express
-    fig_approved = px.bar(df_entity_approved_total, x='Entity', y='Total_Approved', title='✅ Total Approvals by Entity', labels={
+    fig_approved = px.bar(df_entity_approved_total, x='Entity', y='Total_Approved', title=f'✅ {data_mode} Approvals by Entity', labels={
                           'Entity': 'Entity', 'Total_Approved': 'Approvals'}, color='Entity')
     # Hide the legend
-    fig_approved.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_approved)
 
     return fig_approved, df_entity_approved_total
 
-
-def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_apl_total):
+# Function to create applied to approved ratio bar chart and data
+def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_apl_total, data_mode):
     # calculate the ratio of applied to approved (APD/APL)
     # divide the pd.dataframe of total approved by total applied
 
@@ -254,25 +154,16 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     apl_to_apd['APL_to_APD'] = apl_to_apd['APL_to_APD'].replace(
         [float('inf'), float('nan')], 0)
 
-    fig_apl_to_apd = px.bar(apl_to_apd, x='Entity', y='APL_to_APD', title='📊 Applied to Approved Ratio by Entity', labels={
+    fig_apl_to_apd = px.bar(apl_to_apd, x='Entity', y='APL_to_APD', title=f'📊 {data_mode} Applied to Approved Ratio by Entity', labels={
                             'Entity': 'Entity', 'APL_to_APD': '%Applied to Approved'}, color='Entity')
 
-    fig_apl_to_apd.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_apl_to_apd)
 
     return fig_apl_to_apd, apl_to_apd
 
-
-def total_points(data):
-    entity_points_total = calulate_total_points(data)
+# Function to get total points of each entity
+def total_points(data, data_mode):
+    entity_points_total = calulate_total_points(data, data_mode)
     df_entity_points_total = pd.DataFrame.from_dict(
         entity_points_total, orient='index', columns=['Total'])
     df_entity_points_total.reset_index(inplace=True)
@@ -281,8 +172,46 @@ def total_points(data):
     # return df_ranks
     return df_entity_points_total
 
+# display summary details (on the top of the page)
+def display_summary_numbers(total_approved, total_applied, data_mode):
+    # Calculate the conversion rate, with a check for division by zero
+            conversion_rate = round(total_approved / total_applied, 2) if total_applied != 0 else 0
 
-def display_leaderboard_table(df):
+            # Define a layout with two columns
+            col1, col2, col3 = st.columns([1, 1, 1])
+
+            # Display the total applications in the first column
+            with col1:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>🌍 {data_mode} Applications</h3>"
+                    f"<p style='font-size: 32px;'>{total_applied}</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+            # Display the total approvals in the second column
+            with col2:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>✅ {data_mode} Approvals</h3>"
+                    f"<p style='font-size: 32px;'>{total_approved}</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+            # Display the conversion rate in the third column
+            with col3:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>📊 {data_mode} Applied to Approved Coversion Rate</h3>"
+                    f"<p style='font-size: 32px;'>{round(conversion_rate*100,2)} %</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+# Function to display the leaderboard table
+def display_leaderboard_table(df, data_mode):
     # Apply custom CSS for styling
     st.markdown(
         """
@@ -332,10 +261,10 @@ def display_leaderboard_table(df):
 
     # Rename the columns for better readability
     df_with_ranks.rename(columns={
-        'Total': 'OPS Score',
-        'Total_Approved': 'Total Approvals',
-        'Total_Applied': 'Total Applications',
-        'APL_to_APD': 'Applied to Approved Ratio %'
+        'Total': f'{data_mode} OPS Score',
+        'Total_Approved': f'{data_mode} Approvals',
+        'Total_Applied': f'{data_mode} Applications',
+        'APL_to_APD': f'{data_mode} Applied to Approved Ratio %'
     }, inplace=True)
 
     # Ensure the Rank column is included and set as the index
@@ -343,8 +272,8 @@ def display_leaderboard_table(df):
 
     # Specify the order of columns explicitly
     # Make sure that the columns listed here match your DataFrame
-    columns_order = ['Rank', 'Entity', 'OPS Score',
-                     'Total Applications', 'Total Approvals', 'Applied to Approved Ratio %']
+    columns_order = ['Rank', 'Entity', f'{data_mode} OPS Score',
+                     f'{data_mode} Applications', f'{data_mode} Approvals', f'{data_mode} Applied to Approved Ratio %']
 
     # Check if all specified columns exist in the DataFrame
     for col in columns_order:
@@ -365,8 +294,6 @@ def display_leaderboard_table(df):
 # Functional Image Rendaring
 # Replace with your image URL_image_path
 
-
-# exchange marathon logo
 icon_path = 'https://lh3.googleusercontent.com/d/19KFA_FrnUb8UVj06EyfhFXdeDa6vVVui'
 mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
 favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
@@ -388,6 +315,37 @@ def functional_image_rendering(function):
         # Render GTe image
         st.image(gte_image_path)
 
+def functional_bar_charts_formatting(chart):
+    chart.update_layout(
+        title_font=dict(size=20, color="#31333F"),  # Title font size
+        # X-axis title font size
+        xaxis_title_font=dict(size=16, color="#31333F"),
+        # Y-axis title font size
+        yaxis_title_font=dict(size=16, color="#31333F"),
+        # X-axis tick font size
+        xaxis_tickfont=dict(size=14, color="#31333F"),
+        # Y-axis tick font size
+        yaxis_tickfont=dict(size=14, color="#31333F"),
+        showlegend=False)
+
+def radio_button():
+    data_type = st.radio(
+        "",
+        ["Overall Numbers", "Daily Numbers"],
+        captions=[
+            f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
+            f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
+        ],
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+
+    if data_type == "Overall Numbers":
+        data_mode = "Total"
+    elif data_type == "Daily Numbers":
+        data_mode = "Daily"
+
+    return data_mode
 
 # Main Streamlit app
 
@@ -408,6 +366,11 @@ def main():
         unsafe_allow_html=True
     )
 
+    st.markdown("<div style='text-align: left;'>"
+                f"<h4>Select the type of data you want to view</h4>"
+                "</div>",
+                unsafe_allow_html=True,)
+    data_mode = radio_button()
     # Set interval to 5 minutes
     st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
@@ -418,18 +381,15 @@ def main():
     data = load_data(sheet_url)
 
     if data is not None:
-
         # Check if the 'Entity' column exists in the DataFrame
-        if 'Entity' in data.columns:
+        if 'Entity' in data.columns:  
 
             # calculation of leaderboard items
-            fig_applied, df_entity_applied_total = applied_bar_chart_and_data(
-                data)
-            fig_approved, df_entity_approved_total = approved_bar_chart_and_data(
-                data)
+            fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
+            fig_approved, df_entity_approved_total = approved_bar_chart_and_data(data, data_mode)
             fig_apltoapd, df_entity_apltoapd_total = applied_to_approved_ratio_bar_chart_and_data(
-                df_entity_approved_total, df_entity_applied_total)
-            df_ranks = total_points(data)
+                df_entity_approved_total, df_entity_applied_total, data_mode)
+            df_ranks = total_points(data, data_mode)
 
             df_combined = df_entity_applied_total.merge(
                 df_entity_approved_total, on='Entity').merge(
@@ -439,48 +399,13 @@ def main():
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
 
-            # Calculate the conversion rate, with a check for division by zero
-            conversion_rate = round(
-                total_approved / total_applied, 2) if total_applied != 0 else 0
+            # Display the summary numbers (total applications, total approvals, and conversion rate)
+            display_summary_numbers(total_approved, total_applied, data_mode)
 
-            # Define a layout with two columns
-            col1, col2, col3 = st.columns([1, 1, 1])
-
-            # Display the total approvals in the first column
-            with col1:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>🌍 Total Applications</h3>"
-                    f"<p style='font-size: 32px;'>{
-                        df_entity_applied_total['Total_Applied'].sum()}</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-
-            # Display the leaderboard in the second column
-            with col2:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>✅ Total Approvals</h3>"
-                    f"<p style='font-size: 32px;'>{
-                        df_entity_approved_total['Total_Approved'].sum()}</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-
-            with col3:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>📊 Overall Applied to Approved Coversion Rate</h3>"
-                    f"<p style='font-size: 32px;'>{conversion_rate*100} %</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-
-            st.subheader('🔥Leaderboard')
+            st.subheader(f'🔥{data_mode} Leaderboard')
 
             # Display the leaderboard table
-            display_leaderboard_table(df_combined)
+            display_leaderboard_table(df_combined, data_mode)
 
             st.divider()
 
@@ -517,60 +442,36 @@ def main():
                 functional_image_rendering(selected_function)
 
             # Get the count of 'Applied' related to each entity based on the selected function
-            applied_counts = count_applied_by_entity(data, selected_function)
+            applied_counts = count_applied_by_entity(data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
-            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', title=f'🌍 Applications by Entity for {
-                           selected_function} Function', labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
-            fig_1.update_layout(
-                title_font=dict(size=20, color="#31333F"),  # Title font size
-                # X-axis title font size
-                xaxis_title_font=dict(size=16, color="#31333F"),
-                # Y-axis title font size
-                yaxis_title_font=dict(size=16, color="#31333F"),
-                # X-axis tick font size
-                xaxis_tickfont=dict(size=14, color="#31333F"),
-                # Y-axis tick font size
-                yaxis_tickfont=dict(size=14, color="#31333F"),
-                showlegend=False)
+            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', 
+                           title=f'🌍 {data_mode} Applications by Entity for {selected_function} Function', 
+                           labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
+            
+            functional_bar_charts_formatting(fig_1)
 
             # Get the count of 'Approved' related to each entity based on the selected function
-            approved_counts = count_approved_by_entity(data, selected_function)
+            approved_counts = count_approved_by_entity(data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
-            fig_2 = px.bar(approved_counts, x='Entity', y='Count_Approved', title=f'✅ Approvals by Entity for {selected_function} Function',
+            fig_2 = px.bar(approved_counts, x='Entity', y='Count_Approved', 
+                           title=f'✅ {data_mode} Approvals by Entity for {selected_function} Function',
                            labels={'Entity': 'Entity', 'Count_Approved': 'Approvals'}, color='Entity')
-            fig_2.update_layout(
-                title_font=dict(size=20, color="#31333F"),  # Title font size
-                # X-axis title font size
-                xaxis_title_font=dict(size=16, color="#31333F"),
-                # Y-axis title font size
-                yaxis_title_font=dict(size=16, color="#31333F"),
-                # X-axis tick font size
-                xaxis_tickfont=dict(size=14, color="#31333F"),
-                # Y-axis tick font size
-                yaxis_tickfont=dict(size=14, color="#31333F"),
-                showlegend=False)
+            
+            functional_bar_charts_formatting(fig_2)
 
             applied_to_approved_percent = count_applied_to_approved_ratio(
-                data, selected_function)
+                data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
-            fig_3 = px.bar(applied_to_approved_percent, x='Entity', y='Applied_to_Approved_Ratio', title=f'📊 Applied to Approved Ratio by Entity for {selected_function} Function',
+            fig_3 = px.bar(applied_to_approved_percent, x='Entity', y='Applied_to_Approved_Ratio', 
+                           title=f'📊 {data_mode} Applied to Approved Ratio by Entity for {selected_function} Function',
                            labels={'Entity': 'Entity', 'Applied_to_Approved_Ratio': 'Applied to Approved Ratio'}, color='Entity')
 
-            fig_3.update_layout(
-                title_font=dict(size=20, color="#31333F"),  # Title font size
-                # X-axis title font size
-                xaxis_title_font=dict(size=16, color="#31333F"),
-                # Y-axis title font size
-                yaxis_title_font=dict(size=16, color="#31333F"),
-                # X-axis tick font size
-                xaxis_tickfont=dict(size=14, color="#31333F"),
-                # Y-axis tick font size
-                yaxis_tickfont=dict(size=14, color="#31333F"),
-                showlegend=False)
-
+            functional_bar_charts_formatting(fig_3)
+        
+            ###############################################################################
             col5, col6 = st.columns(2)
 
             with col5:
