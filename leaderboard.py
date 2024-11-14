@@ -162,8 +162,8 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     return fig_apl_to_apd, apl_to_apd
 
 # Function to get total points of each entity
-def total_points(data):
-    entity_points_total = calulate_total_points(data)
+def total_points(data, data_mode):
+    entity_points_total = calulate_total_points(data, data_mode)
     df_entity_points_total = pd.DataFrame.from_dict(
         entity_points_total, orient='index', columns=['Total'])
     df_entity_points_total.reset_index(inplace=True)
