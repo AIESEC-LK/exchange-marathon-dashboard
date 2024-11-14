@@ -380,14 +380,20 @@ def main():
 
             st.subheader('🔥Leaderboard')
 
-            on = st.toggle("Total")
-            off = st.toggle("Daily")
+            data_type = st.radio(
+                "Select the type of data you want to see",
+                ["Overall Numbers", "Daily Numbers"],
+                captions=[
+                    "Showing Total Data From 11.11.2024 to Today",
+                    f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
+                ],
+                horizontal=True
+            )
 
-            if on:
-                st.write("Showing Total Data From 11.11.2024 to Today")
-
-            if off:
-                st.write(f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}')
+            if data_type == "Overall Numbers":
+                pass
+            elif data_type == "Daily Numbers":
+                pass
 
             # Display the leaderboard table
             display_leaderboard_table(df_combined)
