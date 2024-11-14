@@ -331,7 +331,7 @@ def functional_bar_charts_formatting(chart):
 def radio_button():
     data_type = st.radio(
         "",
-        ["Overall Numbers", "Daily Numbers"],
+        ["Total Numbers", "Daily Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
             f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
