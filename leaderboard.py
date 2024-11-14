@@ -19,7 +19,7 @@ def load_data(sheet_url):
         st.error(f"Error loading data: {str(e)}")
         return None
 
-
+# Function to calculate the total 'Applied' related to each entity
 def calculate_total_applied(df):
     entity_applied_total = {}
     for index, row in df.iterrows():
@@ -32,8 +32,6 @@ def calculate_total_applied(df):
     return entity_applied_total
 
 # Function to calculate the total 'Approved' related to each entity
-
-
 def calculate_total_approved(df):
     entity_approved_total = {}
     for index, row in df.iterrows():
@@ -83,15 +81,6 @@ def count_applied_to_approved_ratio(df, selected_function):
         columns={'%APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
 
-# # Function to calculate ranks on total score
-# def calculate_ranks_on_score(df):
-#     # Sort the DataFrame by 'Total' column in descending order
-#     df_sorted = df.sort_values(by='Total', ascending=False)
-#     # Add a new column 'Rank' to store the ranks
-#     df_sorted['Rank'] = range(1, len(df_sorted) + 1)
-
-#     return df_sorted
-
 # Function to caulculate ranks and display medals for top 3 ranks
 def display_score_ranks(df):
     # Calculate ranks based on scores
@@ -112,6 +101,7 @@ def display_score_ranks(df):
     # display the leaderboard section
     return df_with_ranks
 
+# Function to create total applications bar chart and data
 def applied_bar_chart_and_data(data):
     # Calculate total 'Applied' related to each entity
     entity_applied_total = calculate_total_applied(data)
@@ -127,19 +117,11 @@ def applied_bar_chart_and_data(data):
                          'Entity': 'Entity', 'Total_Applied': 'Applications'}, color='Entity')
 
     # Hide the legend
-    fig_applied.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_applied)
 
     return fig_applied, df_entity_applied_total
 
+# Function to create total approvals bar chart and data
 def approved_bar_chart_and_data(data):
     # Calculate total 'Approved' related to each entity
     entity_approved_total = calculate_total_approved(data)
@@ -153,20 +135,11 @@ def approved_bar_chart_and_data(data):
     fig_approved = px.bar(df_entity_approved_total, x='Entity', y='Total_Approved', title='✅ Total Approvals by Entity', labels={
                           'Entity': 'Entity', 'Total_Approved': 'Approvals'}, color='Entity')
     # Hide the legend
-    fig_approved.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_approved)
 
     return fig_approved, df_entity_approved_total
 
-
+# Function to create applied to approved ratio bar chart and data
 def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_apl_total):
     # calculate the ratio of applied to approved (APD/APL)
     # divide the pd.dataframe of total approved by total applied
@@ -184,20 +157,11 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     fig_apl_to_apd = px.bar(apl_to_apd, x='Entity', y='APL_to_APD', title='📊 Applied to Approved Ratio by Entity', labels={
                             'Entity': 'Entity', 'APL_to_APD': '%Applied to Approved'}, color='Entity')
 
-    fig_apl_to_apd.update_layout(
-        title_font=dict(size=20, color="#31333F"),  # Title font size
-        # X-axis title font size
-        xaxis_title_font=dict(size=16, color="#31333F"),
-        # Y-axis title font size
-        yaxis_title_font=dict(size=16, color="#31333F"),
-        xaxis_tickfont=dict(size=14, color="#31333F"),  # X-axis tick font size
-        yaxis_tickfont=dict(size=14, color="#31333F"),  # Y-axis tick font size
-        showlegend=False
-    )
+    functional_bar_charts_formatting(fig_apl_to_apd)
 
     return fig_apl_to_apd, apl_to_apd
 
-
+# Function to get total points of each entity
 def total_points(data):
     entity_points_total = calulate_total_points(data)
     df_entity_points_total = pd.DataFrame.from_dict(
@@ -208,7 +172,46 @@ def total_points(data):
     # return df_ranks
     return df_entity_points_total
 
+# display summary details (on the top of the page)
+def display_summary_numbers(total_approved, total_applied):
+    # Calculate the conversion rate, with a check for division by zero
+            conversion_rate = round(
+                total_approved / total_applied, 2) if total_applied != 0 else 0
 
+            # Define a layout with two columns
+            col1, col2, col3 = st.columns([1, 1, 1])
+
+            # Display the total applications in the first column
+            with col1:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>🌍 Total Applications</h3>"
+                    f"<p style='font-size: 32px;'>{total_applied}</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+            # Display the total approvals in the second column
+            with col2:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>✅ Total Approvals</h3>"
+                    f"<p style='font-size: 32px;'>{total_approved}</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+            # Display the conversion rate in the third column
+            with col3:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>📊 Overall Applied to Approved Coversion Rate</h3>"
+                    f"<p style='font-size: 32px;'>{conversion_rate*100} %</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
+
+# Function to display the leaderboard table
 def display_leaderboard_table(df):
     # Apply custom CSS for styling
     st.markdown(
@@ -373,44 +376,7 @@ def main():
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
 
-            # Calculate the conversion rate, with a check for division by zero
-            conversion_rate = round(
-                total_approved / total_applied, 2) if total_applied != 0 else 0
-
-            # Define a layout with two columns
-            col1, col2, col3 = st.columns([1, 1, 1])
-
-            # Display the total applications in the first column
-            with col1:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>🌍 Total Applications</h3>"
-                    f"<p style='font-size: 32px;'>{
-                        df_entity_applied_total['Total_Applied'].sum()}</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-
-            # Display the total approvals in the second column
-            with col2:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>✅ Total Approvals</h3>"
-                    f"<p style='font-size: 32px;'>{
-                        df_entity_approved_total['Total_Approved'].sum()}</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-
-            # Display the conversion rate in the third column
-            with col3:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>📊 Overall Applied to Approved Coversion Rate</h3>"
-                    f"<p style='font-size: 32px;'>{conversion_rate*100} %</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
+            display_summary_numbers(total_approved, total_applied)
 
             st.subheader('🔥Leaderboard')
 
