@@ -56,29 +56,29 @@ def calulate_total_points(df, data_mode):
     return entity_sum
 
 # Function to calculate the count of 'Applied' related to each entity based on the selected function
-def count_applied_by_entity(df, selected_function):
+def count_applied_by_entity(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     applied_counts = filtered_df.groupby(
-        'Entity')['Applied'].sum().reset_index()
-    applied_counts.rename(columns={'Applied': 'Count_Applied'}, inplace=True)
+        'Entity')[f'{data_mode} Applied'].sum().reset_index()
+    applied_counts.rename(columns={f'{data_mode} Applied': 'Count_Applied'}, inplace=True)
     return applied_counts
 
 # Function to calculate the count of 'Approved' related to each entity based on the selected function
-def count_approved_by_entity(df, selected_function):
+def count_approved_by_entity(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     approved_counts = filtered_df.groupby(
-        'Entity')['Approved'].sum().reset_index()
+        'Entity')[f'{data_mode} Approved'].sum().reset_index()
     approved_counts.rename(
-        columns={'Approved': 'Count_Approved'}, inplace=True)
+        columns={f'{data_mode} Approved': 'Count_Approved'}, inplace=True)
     return approved_counts
 
 # Function to calculate the %applied to approved ratio for each entity on the selected function
-def count_applied_to_approved_ratio(df, selected_function):
+def count_applied_to_approved_ratio(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
     applied_to_approved_ratio = filtered_df.groupby(
-        'Entity')['%APL-APD'].sum().reset_index()
+        'Entity')[f'{data_mode} %APL-APD'].sum().reset_index()
     applied_to_approved_ratio.rename(
-        columns={'%APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
+        columns={f'{data_mode} %APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
 
 # Function to caulculate ranks and display medals for top 3 ranks
@@ -364,7 +364,7 @@ def main():
         "<hr style='border: 1px solid #000; width: 100%;'>",
         unsafe_allow_html=True
     )
-
+    data_mode = radio_button()
     # Set interval to 5 minutes
     st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
@@ -379,7 +379,7 @@ def main():
         # Check if the 'Entity' column exists in the DataFrame
         if 'Entity' in data.columns:  
 
-            data_mode = radio_button()              
+            # data_mode = radio_button()              
 
             # calculation of leaderboard items
             fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
@@ -439,7 +439,7 @@ def main():
                 functional_image_rendering(selected_function)
 
             # Get the count of 'Applied' related to each entity based on the selected function
-            applied_counts = count_applied_by_entity(data, selected_function)
+            applied_counts = count_applied_by_entity(data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
             fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', 
@@ -449,7 +449,7 @@ def main():
             functional_bar_charts_formatting(fig_1)
 
             # Get the count of 'Approved' related to each entity based on the selected function
-            approved_counts = count_approved_by_entity(data, selected_function)
+            approved_counts = count_approved_by_entity(data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
             fig_2 = px.bar(approved_counts, x='Entity', y='Count_Approved', 
@@ -459,7 +459,7 @@ def main():
             functional_bar_charts_formatting(fig_2)
 
             applied_to_approved_percent = count_applied_to_approved_ratio(
-                data, selected_function)
+                data, selected_function, data_mode)
 
             # Create a bar chart using Plotly Express
             fig_3 = px.bar(applied_to_approved_percent, x='Entity', y='Applied_to_Approved_Ratio', 
