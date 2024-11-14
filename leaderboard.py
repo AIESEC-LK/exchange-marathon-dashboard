@@ -19,37 +19,6 @@ def load_data(sheet_url):
         st.error(f"Error loading data: {str(e)}")
         return None
 
-# Function to create a bar chart based on the specified metric
-
-
-def create_bar_chart_seperate(df, entity, metric, title):
-    filtered_df = df[df['Entity'] == entity]
-    fig = px.bar(filtered_df, x='Function', y=metric, title=title, labels={
-                 'Function': 'Function', 'Entity': 'Entity', metric: metric}, color='Function')
-    return fig
-
-# Function to create a bar chart based on the total points of each entity
-
-
-def create_bar_chart(entity_sum):
-    # Convert entity sum dictionary to DataFrame
-    df_entity_sum = pd.DataFrame.from_dict(entity_sum, orient='index')
-
-    # Reset index to make entity a column instead of index
-    df_entity_sum.reset_index(inplace=True)
-    df_entity_sum.rename(columns={'index': 'Entity'}, inplace=True)
-
-    # Create a bar chart using Plotly Express
-    fig = px.bar(df_entity_sum, x='Entity', y='Total', title='Total Score', labels={
-                 'Entity': 'Entity', 'Total': 'Total Points'}, color='Entity')
-
-    # Hide the legend
-    fig.update_layout(showlegend=False)
-
-    return fig
-
-# Function to calculate the total 'Applied' related to each entity
-
 
 def calculate_total_applied(df):
     entity_applied_total = {}
@@ -122,16 +91,6 @@ def count_applied_to_approved_ratio(df, selected_function):
         columns={'%APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
 
-
-def calculate_approval_ranks(df):
-    # Sort the DataFrame by 'Total_Approved' column in descending order
-    df_sorted = df.sort_values(by='Total_Approved', ascending=False)
-    # Add a new column 'Rank' to store the ranks
-    df_sorted['Rank'] = range(1, len(df_sorted) + 1)
-
-    return df_sorted
-
-
 def calculate_ranks_on_score(df):
     # Sort the DataFrame by 'Total' column in descending order
     df_sorted = df.sort_values(by='Total', ascending=False)
@@ -164,7 +123,6 @@ def calculate_ranks_on_score(df):
     # display the leaderboard section
     display_leaderboard_table(df_with_ranks, tot_ap_approvals)
 
-
 def display_score_ranks(df):
     # Calculate ranks based on scores
     df_with_ranks = calculate_ranks_on_score(df)
@@ -182,7 +140,6 @@ def display_score_ranks(df):
 
     # display the leaderboard section
     return df_with_ranks
-
 
 def applied_bar_chart_and_data(data):
     # Calculate total 'Applied' related to each entity
@@ -211,7 +168,6 @@ def applied_bar_chart_and_data(data):
     )
 
     return fig_applied, df_entity_applied_total
-
 
 def approved_bar_chart_and_data(data):
     # Calculate total 'Approved' related to each entity
@@ -388,7 +344,18 @@ def functional_image_rendering(function):
         # Render GTe image
         st.image(gte_image_path)
 
-
+def functional_bar_charts_formatting(chart):
+    chart.update_layout(
+        title_font=dict(size=20, color="#31333F"),  # Title font size
+        # X-axis title font size
+        xaxis_title_font=dict(size=16, color="#31333F"),
+        # Y-axis title font size
+        yaxis_title_font=dict(size=16, color="#31333F"),
+        # X-axis tick font size
+        xaxis_tickfont=dict(size=14, color="#31333F"),
+        # Y-axis tick font size
+        yaxis_tickfont=dict(size=14, color="#31333F"),
+        showlegend=False)
 # Main Streamlit app
 
 def main():
@@ -520,19 +487,21 @@ def main():
             applied_counts = count_applied_by_entity(data, selected_function)
 
             # Create a bar chart using Plotly Express
-            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', title=f'🌍 Applications by Entity for {
-                           selected_function} Function', labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
-            fig_1.update_layout(
-                title_font=dict(size=20, color="#31333F"),  # Title font size
-                # X-axis title font size
-                xaxis_title_font=dict(size=16, color="#31333F"),
-                # Y-axis title font size
-                yaxis_title_font=dict(size=16, color="#31333F"),
-                # X-axis tick font size
-                xaxis_tickfont=dict(size=14, color="#31333F"),
-                # Y-axis tick font size
-                yaxis_tickfont=dict(size=14, color="#31333F"),
-                showlegend=False)
+            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', title=f'🌍 Applications by Entity for 
+                           {selected_function} Function', labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
+            
+            functional_bar_charts_formatting(fig_1)
+            # fig_1.update_layout(
+            #     title_font=dict(size=20, color="#31333F"),  # Title font size
+            #     # X-axis title font size
+            #     xaxis_title_font=dict(size=16, color="#31333F"),
+            #     # Y-axis title font size
+            #     yaxis_title_font=dict(size=16, color="#31333F"),
+            #     # X-axis tick font size
+            #     xaxis_tickfont=dict(size=14, color="#31333F"),
+            #     # Y-axis tick font size
+            #     yaxis_tickfont=dict(size=14, color="#31333F"),
+            #     showlegend=False)
 
             # Get the count of 'Approved' related to each entity based on the selected function
             approved_counts = count_approved_by_entity(data, selected_function)
