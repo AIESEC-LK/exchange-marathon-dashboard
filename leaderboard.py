@@ -487,8 +487,9 @@ def main():
             applied_counts = count_applied_by_entity(data, selected_function)
 
             # Create a bar chart using Plotly Express
-            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', title=f'🌍 Applications by Entity for 
-                           {selected_function} Function', labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
+            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', 
+                           title=f'🌍 Applications by Entity for {selected_function} Function', 
+                           labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
             
             functional_bar_charts_formatting(fig_1)
             # fig_1.update_layout(
