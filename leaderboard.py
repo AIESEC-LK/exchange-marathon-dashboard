@@ -211,7 +211,7 @@ def display_summary_numbers(total_approved, total_applied, data_mode):
                 )
 
 # Function to display the leaderboard table
-def display_leaderboard_table(df, data_mode):
+def display_leaderboard_table(df):
     # Apply custom CSS for styling
     st.markdown(
         """
@@ -330,7 +330,11 @@ def functional_bar_charts_formatting(chart):
 
 def radio_button():
     data_type = st.radio(
-        "Select the type of data you want to see",
+        
+        st.markdown("<div style='text-align: center;'>"
+                    f"<h4>Select the type of data you want to see</h4>"
+                    "</div>",
+                    unsafe_allow_html=True,),
         ["Overall Numbers", "Daily Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
@@ -375,11 +379,8 @@ def main():
     data = load_data(sheet_url)
 
     if data is not None:
-
         # Check if the 'Entity' column exists in the DataFrame
         if 'Entity' in data.columns:  
-
-            # data_mode = radio_button()              
 
             # calculation of leaderboard items
             fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
@@ -402,7 +403,7 @@ def main():
             st.subheader(f'🔥{data_mode} Leaderboard')
 
             # Display the leaderboard table
-            display_leaderboard_table(df_combined, data_mode)
+            display_leaderboard_table(df_combined)
 
             st.divider()
 
