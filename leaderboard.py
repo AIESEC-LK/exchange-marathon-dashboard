@@ -340,7 +340,7 @@ def radio_button():
         label_visibility="collapsed"
     )
 
-    if data_type == "Overall Numbers":
+    if data_type == "Total Numbers":
         data_mode = "Total"
     elif data_type == "Daily Numbers":
         data_mode = "Daily"
