@@ -330,11 +330,7 @@ def functional_bar_charts_formatting(chart):
 
 def radio_button():
     data_type = st.radio(
-        
-        st.markdown("<div style='text-align: center;'>"
-                    f"<h4>Select the type of data you want to see</h4>"
-                    "</div>",
-                    unsafe_allow_html=True,),
+        "Select the type of data you want to see",
         ["Overall Numbers", "Daily Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
