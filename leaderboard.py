@@ -211,7 +211,7 @@ def display_summary_numbers(total_approved, total_applied, data_mode):
                 )
 
 # Function to display the leaderboard table
-def display_leaderboard_table(df):
+def display_leaderboard_table(df, data_mode):
     # Apply custom CSS for styling
     st.markdown(
         """
@@ -261,10 +261,10 @@ def display_leaderboard_table(df):
 
     # Rename the columns for better readability
     df_with_ranks.rename(columns={
-        'Total': 'OPS Score',
-        'Total_Approved': 'Total Approvals',
-        'Total_Applied': 'Total Applications',
-        'APL_to_APD': 'Applied to Approved Ratio %'
+        'Total': f'{data_mode} OPS Score',
+        'Total_Approved': f'{data_mode} Approvals',
+        'Total_Applied': f'{data_mode} Applications',
+        'APL_to_APD': f'{data_mode} Applied to Approved Ratio %'
     }, inplace=True)
 
     # Ensure the Rank column is included and set as the index
@@ -336,7 +336,8 @@ def radio_button():
             f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
             f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
         ],
-        horizontal=True
+        horizontal=True,
+        label_visibility="collapsed"
     )
 
     if data_type == "Overall Numbers":
