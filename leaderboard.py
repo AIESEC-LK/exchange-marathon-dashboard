@@ -5,6 +5,8 @@ import plotly.express as px
 import json  # Import the json module
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
+from datetime import datetime
+import pytz
 
 # Loading Data
 
@@ -329,12 +331,19 @@ def functional_bar_charts_formatting(chart):
         showlegend=False)
 
 def radio_button():
+
+    # Set the time zone to GMT+5:30 (Asia/Kolkata)
+    tz = pytz.timezone('Asia/Kolkata')
+
+    # Get today's date in GMT+5:30 and format it
+    today_gmt_530 = datetime.now(tz).strftime("%d-%m-%Y")
+
     data_type = st.radio(
         "",
         ["Total Numbers", "Daily Numbers"],
         captions=[
-            f'Showing Total Data From 11-11-2024 to {pd.to_datetime("today").strftime("%d-%m-%Y")}',
-            f'Showing Daily Data on {pd.to_datetime("today").strftime("%d-%m-%Y")}'
+            f'Showing Total Data From 11-11-2024 to {today_gmt_530}',
+            f'Showing Daily Data on {today_gmt_530}'
         ],
         horizontal=True,
         label_visibility="collapsed"

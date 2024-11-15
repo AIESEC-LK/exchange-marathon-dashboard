@@ -1,39 +1,38 @@
 // API data
 const baseUrl = 'https://analytics.api.aiesec.org/v2/applications/analyze';
-const accessToken = '';
+const accessToken = ''
 
 // Constants
 const entitiesList = [
     { id: 222, name: 'CC' },
     { id: 872, name: 'CN' },
     { id: 1340, name: 'CS' },
-    { id: 221, name: 'USJ' },
     { id: 2204, name: 'Kandy' },
+    { id: 4535, name: 'NIBM' },
+    { id: 2186, name: 'NSBM' },
+    { id: 5490, name: 'Rajarata' },
     { id: 2175, name: 'Ruhuna' },
     { id: 2188, name: 'SLIIT' },
-    { id: 2186, name: 'NSBM' },
-    { id: 4535, name: 'NIBM' },
-    { id: 5490, name: 'Rajarata' }
+    { id: 221, name: 'USJ' }
 ];
 
 
 const regexList = [
   // {name: "Total", pattern: /^.*_total$/},
+  {name: "iGTa", pattern: /^i_.*_[8]$/},
+  {name: "iGTe", pattern: /^i_.*_[9]$/},
+  {name: "iGV", pattern: /^i_.*_[7]$/},
 
-  {name: "oGV", pattern: /^o_.*_[7]$/},
   {name: "oGTa", pattern: /^o_.*_[8]$/},
   {name: "oGTe", pattern: /^o_.*_[9]$/},
-
-  {name: "iGV", pattern: /^i_.*_[7]$/},
-  {name: "iGTa", pattern: /^i_.*_[8]$/},
-  {name: "iGTe", pattern: /^i_.*_[9]$/}
+  {name: "oGV", pattern: /^o_.*_[7]$/}
 ];
 
 // Configs
-const startDate = '2024-10-01';
-const endDate = '2024-10-31';
+const startDate = '2024-11-11';
+const endDate = '2024-11-17';
 
-const sheetName = "NLDS24"
+const sheetName = "Nov 11 - 17"
 
 const keysList = [
   // "matched",
@@ -62,13 +61,15 @@ const headersList = [
 ]
 
 // Helper functions
-function fetchData(startDate, endDate) {
+function fetchData(startDate, endDate, opportunity) {
   const url = `${baseUrl}?access_token=${accessToken}&start_date=${startDate}&end_date=${endDate}&performance_v3[office_id]=${1623}`;
   const json = UrlFetchApp.fetch(url).getContentText();
   const data = JSON.parse(json);
   return data;
 }
 
+// doc_count -> APL values
+// applicants.value -> PPL values
 function extractData(apiOutput) {
   let extractedData = {}
 
@@ -80,7 +81,7 @@ function extractData(apiOutput) {
     regexMatches.forEach((match)=> {
       keysList.forEach((key) => {
         if(match[0].includes(key)){
-          obj[key] = obj[key] ? obj[key] : 0 + (match[1]?.doc_count || 0)
+          obj[key] = obj[key] ? obj[key] : 0 + (match[1]?.applicants?.value || 0)
         };
       });
 
