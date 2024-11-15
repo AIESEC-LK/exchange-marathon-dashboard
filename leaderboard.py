@@ -494,14 +494,13 @@ def main():
             with col14:
                 st.plotly_chart(fig_3, use_container_width=True)
 
-            st.write("<br><br>", unsafe_allow_html=True)
+            st.write("<br>", unsafe_allow_html=True)
 
             st.divider()
 
             # st.write("<br><br>", unsafe_allow_html=True)
             # Footer - It would be great if you could give us a recognition for the team.
             st.write("<p style='text-align: center;'>Made with ❤️ by &lt;/Dev.Team&gt; of <strong>AIESEC in Sri Lanka</strong></p>", unsafe_allow_html=True)
-
         else:
             st.error("The 'Entity' column does not exist in the loaded data.")
     else:
