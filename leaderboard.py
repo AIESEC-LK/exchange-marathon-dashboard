@@ -343,7 +343,7 @@ def radio_button():
         ["Total Numbers", "Operations Summit Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {today_gmt_530}',
-            f'Showing Daily Data on {today_gmt_530}'
+            f'Showing Data on the Operation Summit Day'
         ],
         horizontal=True,
         label_visibility="collapsed"
