@@ -351,7 +351,7 @@ def radio_button():
 
     if data_type == "Total Numbers":
         data_mode = "Total"
-    elif data_type == "Daily Numbers":
+    elif data_type == "Operations Summit Numbers":
         data_mode = "Daily"
 
     return data_mode
@@ -381,7 +381,7 @@ def main():
                 unsafe_allow_html=True,)
     data_mode = radio_button()
     # Set interval to 5 minutes
-    st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
+    st_autorefresh(interval=1 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
     # Datasource url / Google Sheets CSV
     sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1oLfepAJoK2NEU3rdYh2RPEUVW3Gk3Rmnj6GQ4oxDB4TI-RR5Zttx3cftpccg3YcyeNW4XUer_YQb/pub?gid=0&single=true&output=csv"
