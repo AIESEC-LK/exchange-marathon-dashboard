@@ -83,6 +83,18 @@ def count_applied_to_approved_ratio(df, selected_function, data_mode):
         columns={f'{data_mode} %APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
 
+# Function to calculate the total SUs related to each entity
+def calculate_total_sus(df, data_mode):
+    entity_sus_total = {}
+    for index, row in df.iterrows():
+        entity = row['Entity']
+        sus = row[f'{data_mode} SUs']
+        if entity not in entity_sus_total:
+            entity_sus_total[entity] = sus
+        else:
+            entity_sus_total[entity] += sus
+    return entity_sus_total
+
 # Function to caulculate ranks and display medals for top 3 ranks
 def display_score_ranks(df):
     # Calculate ranks based on scores
@@ -162,6 +174,24 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     functional_bar_charts_formatting(fig_apl_to_apd)
 
     return fig_apl_to_apd, apl_to_apd
+
+# Function to create total SUs bar chart and data
+def sus_bar_chart_and_data(data, data_mode):
+    entity_sus_total = calculate_total_sus(data, data_mode)
+
+    df_entity_sus_total = pd.DataFrame.from_dict(
+        entity_sus_total, orient='index', columns=['Total_SUs'])
+    df_entity_sus_total.reset_index(inplace=True)
+    df_entity_sus_total.rename(columns={'index': 'Entity'}, inplace=True)
+
+    fig_sus = px.bar(df_entity_sus_total, x='Entity', y='Total_SUs', 
+                     title=f'📈 {data_mode} SUs by Entity', 
+                     labels={'Entity': 'Entity', 'Total_SUs': 'SUs'}, 
+                     color='Entity')
+
+    functional_bar_charts_formatting(fig_sus)
+
+    return fig_sus, df_entity_sus_total
 
 # Function to get total points of each entity
 def total_points(data, data_mode):
@@ -384,7 +414,7 @@ def main():
     st_autorefresh(interval=1 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
     # Datasource url / Google Sheets CSV
-    sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1oLfepAJoK2NEU3rdYh2RPEUVW3Gk3Rmnj6GQ4oxDB4TI-RR5Zttx3cftpccg3YcyeNW4XUer_YQb/pub?gid=0&single=true&output=csv"
+    sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbGYmP9diWrpLxS-Ga40xUrCREk_BGb6NQX10r0wpEkiARKzCg1ayoi2OPYvTKPREozgM8WY2CpGoU/pub?gid=1455963871&single=true&output=csv"
 
     # Load data using the cached function
     data = load_data(sheet_url)
@@ -396,20 +426,29 @@ def main():
             # calculation of leaderboard items
             fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
             fig_approved, df_entity_approved_total = approved_bar_chart_and_data(data, data_mode)
-            fig_apltoapd, df_entity_apltoapd_total = applied_to_approved_ratio_bar_chart_and_data(
-                df_entity_approved_total, df_entity_applied_total, data_mode)
+            fig_sus, df_entity_sus_total = sus_bar_chart_and_data(data, data_mode)
+            fig_apltoapd, df_entity_apltoapd_total = applied_to_approved_ratio_bar_chart_and_data(df_entity_approved_total, df_entity_applied_total, data_mode)
             df_ranks = total_points(data, data_mode)
 
+        # Merge all datasets
             df_combined = df_entity_applied_total.merge(
                 df_entity_approved_total, on='Entity').merge(
-                    df_entity_apltoapd_total, on='Entity').merge(df_ranks, on='Entity')
+                    df_entity_sus_total, on='Entity').merge(
+                        df_entity_apltoapd_total, on='Entity').merge(df_ranks, on='Entity')
 
             # Calculate total values
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
+            total_sus = df_entity_sus_total['Total_SUs'].sum()
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
             display_summary_numbers(total_approved, total_applied, data_mode)
+            st.plotly_chart(fig_applied, use_container_width=True)
+            st.plotly_chart(fig_approved, use_container_width=True)
+            st.plotly_chart(fig_sus, use_container_width=True)  # New SUs plot
+            st.plotly_chart(fig_apltoapd, use_container_width=True)
+            display_leaderboard_table(df_combined, data_mode)
+            st.divider()
 
             st.subheader(f'🔥{data_mode} Leaderboard')
 
