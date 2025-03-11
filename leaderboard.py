@@ -343,7 +343,7 @@ gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gll
 gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
 
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
-title_image_path = "https://lh3.googleusercontent.com/d/1cFUXXNgBsZH8MJFAQXB1-Sayemdr6Jj_"
+title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
 
 
 def functional_image_rendering(function):
@@ -400,7 +400,7 @@ def radio_button():
 
 def main():
     st.set_page_config(
-        layout="wide",
+        # layout="wide",
         # You can change the page title here
         page_title="I SEEK Challenge - Dashboard",
         page_icon=mascot_image,
