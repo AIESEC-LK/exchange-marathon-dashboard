@@ -400,7 +400,7 @@ def radio_button():
 
 def main():
     st.set_page_config(
-        # layout="wide",
+        layout="wide",
         # You can change the page title here
         page_title="I SEEK Challenge - Dashboard",
         page_icon=mascot_image,
