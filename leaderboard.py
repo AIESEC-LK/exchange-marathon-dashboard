@@ -205,12 +205,21 @@ def total_points(data, data_mode):
     return df_entity_points_total
 
 # display summary details (on the top of the page)
-def display_summary_numbers(total_approved, total_applied, data_mode):
+def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode):
     # Calculate the conversion rate, with a check for division by zero
             conversion_rate = round(total_approved / total_applied, 2) if total_applied != 0 else 0
 
             # Define a layout with two columns
-            col1, col2, col3 = st.columns([1, 1, 1])
+            col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+
+            with col1:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>🌍 {data_mode} Sign Ups</h3>"
+                    f"<p style='font-size: 32px;'>{total_SUs}</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
 
             # Display the total applications in the first column
             with col1:
@@ -373,7 +382,7 @@ def radio_button():
         ["Total Numbers", "Operations Summit Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {today_gmt_530}',
-            f'Showing Data on the Operation Summit Day'
+            f'Showing Data on {today_gmt_530}'
         ],
         horizontal=True,
         label_visibility="collapsed"
@@ -442,12 +451,12 @@ def main():
             total_sus = df_entity_sus_total['Total_SUs'].sum()
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
-            display_summary_numbers(total_approved, total_applied, data_mode)
-            st.plotly_chart(fig_applied, use_container_width=True)
-            st.plotly_chart(fig_approved, use_container_width=True)
+            display_summary_numbers(total_sus, total_approved, total_applied, data_mode)
+            # st.plotly_chart(fig_applied, use_container_width=True)
+            # st.plotly_chart(fig_approved, use_container_width=True)
             st.plotly_chart(fig_sus, use_container_width=True)  # New SUs plot
-            st.plotly_chart(fig_apltoapd, use_container_width=True)
-            display_leaderboard_table(df_combined, data_mode)
+            # st.plotly_chart(fig_apltoapd, use_container_width=True)
+            # display_leaderboard_table(df_combined, data_mode)
             st.divider()
 
             st.subheader(f'🔥{data_mode} Leaderboard')
