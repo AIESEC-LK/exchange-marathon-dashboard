@@ -379,7 +379,7 @@ def radio_button():
 
     data_type = st.radio(
         "",
-        ["Total Numbers", "Operations Summit Numbers"],
+        ["Total Numbers", "Daily Numbers"],
         captions=[
             f'Showing Total Data From 11-11-2024 to {today_gmt_530}',
             f'Showing Data on {today_gmt_530}'
