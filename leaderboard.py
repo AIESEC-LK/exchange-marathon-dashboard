@@ -305,6 +305,7 @@ def display_leaderboard_table(df, data_mode):
         'Total': f'{data_mode} OPS Score',
         'Total_Approved': f'{data_mode} Approvals',
         'Total_Applied': f'{data_mode} Applications',
+        'Total_SUs': f'{data_mode} Sign Ups',
         'APL_to_APD': f'{data_mode} Applied to Approved Ratio %'
     }, inplace=True)
 
@@ -313,7 +314,7 @@ def display_leaderboard_table(df, data_mode):
 
     # Specify the order of columns explicitly
     # Make sure that the columns listed here match your DataFrame
-    columns_order = ['Rank', 'Entity', f'{data_mode} OPS Score',
+    columns_order = ['Rank', 'Entity', f'{data_mode} OPS Score', f'{data_mode} Sign Ups',
                      f'{data_mode} Applications', f'{data_mode} Approvals', f'{data_mode} Applied to Approved Ratio %']
 
     # Check if all specified columns exist in the DataFrame
