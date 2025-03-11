@@ -222,7 +222,7 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
                 )
 
             # Display the total applications in the first column
-            with col1:
+            with col2:
                 st.markdown(
                     "<div style='text-align: center;'>"
                     f"<h3>🌍 {data_mode} Applications</h3>"
@@ -232,7 +232,7 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
                 )
 
             # Display the total approvals in the second column
-            with col2:
+            with col3:
                 st.markdown(
                     "<div style='text-align: center;'>"
                     f"<h3>✅ {data_mode} Approvals</h3>"
@@ -242,7 +242,7 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
                 )
 
             # Display the conversion rate in the third column
-            with col3:
+            with col4:
                 st.markdown(
                     "<div style='text-align: center;'>"
                     f"<h3>📊 {data_mode} Applied to Approved Coversion Rate</h3>"
@@ -390,7 +390,7 @@ def radio_button():
 
     if data_type == "Total Numbers":
         data_mode = "Total"
-    elif data_type == "Operations Summit Numbers":
+    elif data_type == "Daily Numbers":
         data_mode = "Daily"
 
     return data_mode
@@ -452,11 +452,7 @@ def main():
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
             display_summary_numbers(total_sus, total_approved, total_applied, data_mode)
-            # st.plotly_chart(fig_applied, use_container_width=True)
-            # st.plotly_chart(fig_approved, use_container_width=True)
-            st.plotly_chart(fig_sus, use_container_width=True)  # New SUs plot
-            # st.plotly_chart(fig_apltoapd, use_container_width=True)
-            # display_leaderboard_table(df_combined, data_mode)
+     
             st.divider()
 
             st.subheader(f'🔥{data_mode} Leaderboard')
@@ -466,20 +462,23 @@ def main():
 
             st.divider()
 
-            col4, col5 = st.columns([1, 1])
+            col204, col205 = st.columns([1, 1])
 
             # applied bar chart
-            with col4:
-                st.plotly_chart(fig_applied, use_container_width=True)
+            with col204:
+                st.plotly_chart(fig_sus, use_container_width=True)
 
             # approved bar chart
-            with col5:
-                st.plotly_chart(fig_approved, use_container_width=True)
+            with col205:
+                st.plotly_chart(fig_applied, use_container_width=True)
 
-            col77_, col7, col7_ = st.columns([1, 2, 1])
+            col206, col207 = st.columns([1, 1])
 
             # applied to approved ratio bar chart
-            with col7:
+            with col206:
+                st.plotly_chart(fig_approved, use_container_width=True)
+
+            with col207:
                 st.plotly_chart(fig_apltoapd, use_container_width=True)
 
             ###############################################################################
