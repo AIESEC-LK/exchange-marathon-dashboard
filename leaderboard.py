@@ -45,6 +45,18 @@ def calculate_total_approved(df, data_mode):
             entity_approved_total[entity] += approved
     return entity_approved_total
 
+# Function to calculate the total SUs related to each entity
+def calculate_total_sus(df, data_mode):
+    entity_sus_total = {}
+    for index, row in df.iterrows():
+        entity = row['Entity']
+        sus = row[f'{data_mode} SUs']
+        if entity not in entity_sus_total:
+            entity_sus_total[entity] = sus
+        else:
+            entity_sus_total[entity] += sus
+    return entity_sus_total
+
 # Function to calculate the total points of each entity
 def calulate_total_points(df, data_mode):
     entity_sum = {}
@@ -82,18 +94,6 @@ def count_applied_to_approved_ratio(df, selected_function, data_mode):
     applied_to_approved_ratio.rename(
         columns={f'{data_mode} %APL-APD': 'Applied_to_Approved_Ratio'}, inplace=True)
     return applied_to_approved_ratio
-
-# Function to calculate the total SUs related to each entity
-def calculate_total_sus(df, data_mode):
-    entity_sus_total = {}
-    for index, row in df.iterrows():
-        entity = row['Entity']
-        sus = row[f'{data_mode} SUs']
-        if entity not in entity_sus_total:
-            entity_sus_total[entity] = sus
-        else:
-            entity_sus_total[entity] += sus
-    return entity_sus_total
 
 # Function to caulculate ranks and display medals for top 3 ranks
 def display_score_ranks(df):
@@ -185,7 +185,7 @@ def sus_bar_chart_and_data(data, data_mode):
     df_entity_sus_total.rename(columns={'index': 'Entity'}, inplace=True)
 
     fig_sus = px.bar(df_entity_sus_total, x='Entity', y='Total_SUs', 
-                     title=f'📈 {data_mode} SUs by Entity', 
+                     title=f'📩 {data_mode} SUs by Entity', 
                      labels={'Entity': 'Entity', 'Total_SUs': 'SUs'}, 
                      color='Entity')
 
@@ -215,7 +215,7 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
             with col1:
                 st.markdown(
                     "<div style='text-align: center;'>"
-                    f"<h3>🌍 {data_mode} Sign Ups</h3>"
+                    f"<h3>📩 {data_mode} Sign Ups</h3>"
                     f"<p style='font-size: 32px;'>{total_SUs}</p>"
                     "</div>",
                     unsafe_allow_html=True,
@@ -342,7 +342,8 @@ gta_image_path = "https://lh3.googleusercontent.com/d/1KP_HuRqFjffWIEZsOHqrGh4l7
 gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gllVDkQfND'
 gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
 
-title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
+# title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
+title_image_path = "https://lh3.googleusercontent.com/d/1cFUXXNgBsZH8MJFAQXB1-Sayemdr6Jj_"
 
 
 def functional_image_rendering(function):
@@ -381,7 +382,7 @@ def radio_button():
         "",
         ["Total Numbers", "Daily Numbers"],
         captions=[
-            f'Showing Total Data From 11-11-2024 to {today_gmt_530}',
+            f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
             f'Showing Data on {today_gmt_530}'
         ],
         horizontal=True,
@@ -401,8 +402,8 @@ def main():
     st.set_page_config(
         layout="wide",
         # You can change the page title here
-        page_title="Winter Exchange Marathon - Dashboard",
-        page_icon=favicon_path,
+        page_title="I SEEK Challenge - Dashboard",
+        page_icon=mascot_image,
     )
 
     col100, col101, col102 = st.columns([1, 5, 1])
@@ -420,7 +421,7 @@ def main():
                 unsafe_allow_html=True,)
     data_mode = radio_button()
     # Set interval to 5 minutes
-    st_autorefresh(interval=1 * 60 * 1000, key="data_refresh")
+    st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
     # Datasource url / Google Sheets CSV
     sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbGYmP9diWrpLxS-Ga40xUrCREk_BGb6NQX10r0wpEkiARKzCg1ayoi2OPYvTKPREozgM8WY2CpGoU/pub?gid=1455963871&single=true&output=csv"
