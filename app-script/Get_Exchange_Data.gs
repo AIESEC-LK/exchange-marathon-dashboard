@@ -22,7 +22,8 @@ function getCurrentDate() {
 
 function fetchData() {
   var today = getCurrentDate();
-  var url1 = `https://analytics.api.aiesec.org/v2/applications/analyze.json?access_token=ArA7-7UZV6QGhqnouAfwZSA49g4pxNxmRxt0giHjBxA&start_date=$2025-03-11&end_date=${today}&performance_v3%5Boffice_id%5D=1623`;
+  const token = //YOUR_TOKEN
+  var url1 = `https://analytics.api.aiesec.org/v2/applications/analyze.json?access_token=${token}&start_date=$2025-03-11&end_date=${today}&performance_v3%5Boffice_id%5D=1623`;
 
   var response = UrlFetchApp.fetch(url1);
   var jsonData = JSON.parse(response.getContentText());
