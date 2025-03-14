@@ -371,12 +371,16 @@ def radio_button():
     # Get today's date in GMT+5:30 and format it
     today_gmt_530 = datetime.now(tz).strftime("%d-%m-%Y")
 
+    # Get yesterday's date in GMT+5:30 and format it
+    yesterday_gmt_530 = (datetime.now(tz) - pd.DateOffset(days=1)).strftime("%d-%m-%Y")
+
     data_type = st.radio(
         "",
         ["Total Numbers", "Daily Numbers"],
         captions=[
-            f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
-            f'Showing Data on {today_gmt_530}'
+            # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
+            f'Showing Total Data From 11-03-2025 to current time',
+            f'Showing Data Between {yesterday_gmt_530} 8.00 PM - {today_gmt_530} Current Time'
         ],
         horizontal=True,
         label_visibility="collapsed"
