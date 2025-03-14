@@ -379,7 +379,7 @@ def radio_button():
         ["Total Numbers", "Daily Numbers"],
         captions=[
             # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
-            f'Showing Total Data From 11-03-2025 to current time',
+            f'Showing Total Data From 11-03-2025 to Current Time',
             f'Showing Data Between {yesterday_gmt_530} : 8.00 PM -- {today_gmt_530} : Current Time'
         ],
         horizontal=True,
