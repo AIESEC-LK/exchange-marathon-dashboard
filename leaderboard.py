@@ -333,20 +333,6 @@ def display_leaderboard_table(df, data_mode):
     # Display the HTML table
     st.markdown(html_table, unsafe_allow_html=True)
 
-# Functional Image Rendaring
-# Replace with your image URL_image_path
-
-icon_path = 'https://lh3.googleusercontent.com/d/19KFA_FrnUb8UVj06EyfhFXdeDa6vVVui'
-mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
-favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
-gta_image_path = "https://lh3.googleusercontent.com/d/1KP_HuRqFjffWIEZsOHqrGh4l7r0YApTv"
-gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gllVDkQfND'
-gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
-
-# title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
-title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
-
-
 def functional_image_rendering(function):
     if (function == "oGV" or function == "iGV"):
         # Render GV image
@@ -397,8 +383,22 @@ def radio_button():
 
     return data_mode
 
-# Main Streamlit app
+# Functional Image Rendaring
+# Replace with your image URL_image_path
 
+icon_path = 'https://lh3.googleusercontent.com/d/19KFA_FrnUb8UVj06EyfhFXdeDa6vVVui'
+mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
+favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
+gta_image_path = "https://lh3.googleusercontent.com/d/1KP_HuRqFjffWIEZsOHqrGh4l7r0YApTv"
+gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gllVDkQfND'
+gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
+
+# title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
+title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
+
+entity_workspace_goodluck_banner = "https://lh3.googleusercontent.comm/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
+
+# Main Streamlit app
 def main():
     st.set_page_config(
         layout="wide",
@@ -415,6 +415,10 @@ def main():
         "<hr style='border: 1px solid #000; width: 100%;'>",
         unsafe_allow_html=True
     )
+
+    col150, col151, col152 = st.columns([1, 5, 1])
+    with col151:
+        st.image(entity_workspace_goodluck_banner, use_column_width=True)
 
     st.markdown("<div style='text-align: left;'>"
                 f"<h4>Select the type of data you want to view</h4>"
