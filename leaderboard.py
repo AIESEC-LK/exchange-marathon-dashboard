@@ -396,7 +396,7 @@ gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
 title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
 
-entity_workspace_goodluck_banner = "https://lh3.googleusercontent.comm/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
+entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
 
 # Main Streamlit app
 def main():
@@ -416,7 +416,8 @@ def main():
         unsafe_allow_html=True
     )
 
-    col150, col151, col152 = st.columns([1, 5, 1])
+    # col150, col151, col152 = st.columns([1, 5, 1])
+    col151 = st.columns(1)
     with col151:
         st.image(entity_workspace_goodluck_banner, use_column_width=True)
 
