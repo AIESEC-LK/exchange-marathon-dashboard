@@ -558,7 +558,7 @@ def main():
                 with col302:
                     st.plotly_chart(fig_1, use_container_width=True)
 
-                col311, col312 = st.column(2)
+                col311, col312 = st.columns(2)
 
                 with col311:
                     st.plotly_chart(fig_2, use_container_width=True)
