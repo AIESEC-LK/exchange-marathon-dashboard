@@ -69,6 +69,12 @@ def calulate_total_points(df, data_mode):
             entity_sum[entity] += total
     return entity_sum
 
+def count_SUs_by_entity(df, selected_function, data_mode):
+    filtered_df = df[df['Function'] == selected_function]
+    su_counts = filtered_df.groupby('Entity')[f'{data_mode} SUs'].sum().reset_index()
+    su_counts.rename(columns={f'{data_mode} SUs': 'Count_SUs'}, inplace=True)
+    return su_counts
+
 # Function to calculate the count of 'Applied' related to each entity based on the selected function
 def count_applied_by_entity(df, selected_function, data_mode):
     filtered_df = df[df['Function'] == selected_function]
@@ -503,6 +509,13 @@ def main():
 
             with col12:
                 functional_image_rendering(selected_function)
+            
+            SU_counts = count_SUs_by_entity(data, selected_function, data_mode)
+            fig_0 = px.bar(SU_counts, x='Entity', y='Count_SUs',
+                           title=f'📩 {data_mode} Sign Ups by Entity for {selected_function} Function',
+                           labels={'Entity': 'Entity', 'Count_SUs': 'Sign Ups'}, color='Entity')
+            
+            functional_bar_charts_formatting(fig_0)
 
             # Get the count of 'Applied' related to each entity based on the selected function
             applied_counts = count_applied_by_entity(data, selected_function, data_mode)
@@ -535,25 +548,42 @@ def main():
             functional_bar_charts_formatting(fig_3)
         
             ###############################################################################
-            col5, col6 = st.columns(2)
+            if selected_function == "oGV" or selected_function == "oGTa" or selected_function == "oGTe":
+                # st.write("<br><br>", unsafe_allow_html=True)
+                col301, col302 = st.columns(2)
 
-            with col5:
-                st.plotly_chart(fig_1, use_container_width=True)
+                with col301:
+                    st.plotly_chart(fig_0, use_container_width=True)
 
-            with col6:
-                st.plotly_chart(fig_2, use_container_width=True)
+                with col302:
+                    st.plotly_chart(fig_1, use_container_width=True)
 
-            col13, col14, col15 = st.columns([1, 2, 1])
+                col311, col312 = st.column(2)
 
-            with col14:
-                st.plotly_chart(fig_3, use_container_width=True)
+                with col311:
+                    st.plotly_chart(fig_2, use_container_width=True)
+
+                with col312:
+                    st.plotly_chart(fig_3, use_container_width=True)
+            
+            else:
+                col5, col6 = st.columns(2)
+
+                with col5:
+                    st.plotly_chart(fig_1, use_container_width=True)
+
+                with col6:
+                    st.plotly_chart(fig_2, use_container_width=True)
+
+                col13, col14, col15 = st.columns([1, 2, 1])
+
+                with col14:
+                    st.plotly_chart(fig_3, use_container_width=True)
 
             st.write("<br>", unsafe_allow_html=True)
-
             st.divider()
 
             # st.write("<br><br>", unsafe_allow_html=True)
-            # Footer - It would be great if you could give us a recognition for the team.
             st.write("<p style='text-align: center;'>Made with ❤️ by &lt;/Dev.Team&gt; of <strong>AIESEC in Sri Lanka</strong></p>", unsafe_allow_html=True)
         else:
             st.error("The 'Entity' column does not exist in the loaded data.")
