@@ -370,20 +370,6 @@ def radio_button():
 
     # Get today's date in GMT+5:30 and format it
     today_gmt_530 = datetime.now(tz).strftime("%d-%m-%Y")
-    # Get the current time in GMT+5:30
-    now = datetime.now(tz)
-    # Define 8:00 PM time object
-    eight_pm = time(20, 0, 0)  # 20:00 hour
-
-    # Check if current time is before or after 8:00 PM
-    if now.time() < eight_pm:
-        # Before 8 PM: Show data from yesterday 8 PM to current time
-        start_time = (now - timedelta(days=1)).strftime("%d-%m-%Y")
-    else:
-        # After 8 PM: Show data from today 8 PM to current time
-        start_time = now.strftime("%d-%m-%Y")
-
-    end_time = now.strftime("%d-%m-%Y")
     
     # Get yesterday's date in GMT+5:30 and format it
     yesterday_gmt_530 = (datetime.now(tz) - pd.DateOffset(days=1)).strftime("%d-%m-%Y")
