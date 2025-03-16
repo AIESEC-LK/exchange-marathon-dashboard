@@ -368,12 +368,6 @@ def radio_button():
     # Set the time zone to GMT+5:30 (Asia/Kolkata)
     tz = pytz.timezone('Asia/Kolkata')
 
-    # Get today's date in GMT+5:30 and format it
-    today_gmt_530 = datetime.now(tz).strftime("%d-%m-%Y")
-
-    # Get yesterday's date in GMT+5:30 and format it
-    yesterday_gmt_530 = (datetime.now(tz) - pd.DateOffset(days=1)).strftime("%d-%m-%Y")
-
     # Get the current time in GMT+5:30
     now = datetime.now(tz)
     
