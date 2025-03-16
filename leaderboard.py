@@ -5,7 +5,7 @@ import plotly.express as px
 import json  # Import the json module
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
-from datetime import datetime, time, timedelta
+from datetime import datetime
 import pytz
 
 # Loading Data
@@ -368,21 +368,11 @@ def radio_button():
     # Set the time zone to GMT+5:30 (Asia/Kolkata)
     tz = pytz.timezone('Asia/Kolkata')
 
-    # Get the current time in GMT+5:30
-    now = datetime.now(tz)
-    
-    # Define 8:00 PM time object
-    eight_pm = time(20, 0, 0)  # 20:00 hours
+    # Get today's date in GMT+5:30 and format it
+    today_gmt_530 = datetime.now(tz).strftime("%d-%m-%Y")
 
-    # Check if current time is before or after 8:00 PM
-    if now.time() < eight_pm:
-        # Before 8 PM: Show data from yesterday 8 PM to current time
-        start_time = (now - timedelta(days=1)).strftime("%d-%m-%Y")
-    else:
-        # After 8 PM: Show data from today 8 PM to current time
-        start_time = now.strftime("%d-%m-%Y")
-
-    end_time = now.strftime("%d-%m-%Y")
+    # Get yesterday's date in GMT+5:30 and format it
+    yesterday_gmt_530 = (datetime.now(tz) - pd.DateOffset(days=1)).strftime("%d-%m-%Y")
 
     data_type = st.radio(
         "",
@@ -390,7 +380,7 @@ def radio_button():
         captions=[
             # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
             f'Showing Total Data From 11-03-2025 to Current Time',
-            f'Showing Data Between {start_time} : 8.00 PM -- {end_time} : Current Time'
+            f'Showing Data Between {yesterday_gmt_530} : 8.00 PM -- {today_gmt_530} : Current Time'
         ],
         horizontal=True,
         label_visibility="collapsed"
@@ -416,7 +406,8 @@ gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
 title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
 
-entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
+nsbm_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
+kandy_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1lRYiydzs42ipNW6tDKWgPmxMRpOKid0o"
 
 # Main Streamlit app
 def main():
@@ -436,9 +427,9 @@ def main():
         unsafe_allow_html=True
     )
 
-    # col151 = st.columns(1)
-    # with col151:
-    #     st.image(entity_workspace_goodluck_banner, use_column_width=True)
+    col151 = st.columns(1)
+    with col151:
+        st.image(kandy_entity_workspace_goodluck_banner, use_column_width=True)
 
     st.markdown("<div style='text-align: left;'>"
                 f"<h4>Select the type of data you want to view</h4>"
