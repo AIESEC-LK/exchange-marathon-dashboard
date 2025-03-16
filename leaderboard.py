@@ -5,7 +5,7 @@ import plotly.express as px
 import json  # Import the json module
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
-from datetime import datetime
+from datetime import datetime, time, timedelta
 import pytz
 
 # Loading Data
@@ -374,13 +374,29 @@ def radio_button():
     # Get yesterday's date in GMT+5:30 and format it
     yesterday_gmt_530 = (datetime.now(tz) - pd.DateOffset(days=1)).strftime("%d-%m-%Y")
 
+    # Get the current time in GMT+5:30
+    now = datetime.now(tz)
+    
+    # Define 8:00 PM time object
+    eight_pm = time(20, 0, 0)  # 20:00 hours
+
+    # Check if current time is before or after 8:00 PM
+    if now.time() < eight_pm:
+        # Before 8 PM: Show data from yesterday 8 PM to current time
+        start_time = (now - timedelta(days=1)).strftime("%d-%m-%Y")
+    else:
+        # After 8 PM: Show data from today 8 PM to current time
+        start_time = now.strftime("%d-%m-%Y")
+
+    end_time = now.strftime("%d-%m-%Y")
+
     data_type = st.radio(
         "",
         ["Total Numbers", "Daily Numbers"],
         captions=[
             # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
             f'Showing Total Data From 11-03-2025 to Current Time',
-            f'Showing Data Between {yesterday_gmt_530} : 8.00 PM -- {today_gmt_530} : Current Time'
+            f'Showing Data Between {end_time} : 8.00 PM -- {start_time} : Current Time'
         ],
         horizontal=True,
         label_visibility="collapsed"
