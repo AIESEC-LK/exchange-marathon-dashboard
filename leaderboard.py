@@ -427,7 +427,7 @@ def main():
         unsafe_allow_html=True
     )
 
-    col151 = st.columns(2)
+    col151 = st.columns(1)
     with col151:
         st.image(kandy_entity_workspace_goodluck_banner, use_column_width=True)
 
