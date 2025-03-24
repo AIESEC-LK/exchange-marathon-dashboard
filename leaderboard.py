@@ -440,7 +440,7 @@ def main():
 
     # col151 = st.columns(1)
     # with col151:
-    st.image(ccxcn_entity_workspace_goodluck_banner, use_column_width=True)
+    # st.image(ccxcn_entity_workspace_goodluck_banner, use_column_width=True)
 
     st.markdown("<div style='text-align: left;'>"
                 f"<h4>Select the type of data you want to view</h4>"
