@@ -316,10 +316,10 @@ def display_leaderboard_table(df, data_mode):
     }, inplace=True)
 
     # Ensure the Rank column is included and set as the index
+    df_with_ranks.reset_index(drop=True, inplace=True)
     df_with_ranks['Rank'] = range(1, len(df_with_ranks) + 1)
 
     # Specify the order of columns explicitly
-    # Make sure that the columns listed here match your DataFrame
     columns_order = ['Rank', 'Entity', f'{data_mode} OPS Score', f'{data_mode} Sign Ups',
                      f'{data_mode} Applications', f'{data_mode} Approvals', f'{data_mode} Applied to Approved Ratio %']
 
@@ -332,11 +332,40 @@ def display_leaderboard_table(df, data_mode):
     # Reorder DataFrame to include the Rank column first
     df_with_ranks = df_with_ranks[columns_order]
 
-    # Convert DataFrame to HTML, including the rank column as a standard column
-    html_table = df_with_ranks.to_html(
-        classes='dataframe', index=False, escape=False)
+    # Create a custom HTML table with your desired header names
+    custom_headers = {
+        'Rank': 'ස්ථානය',
+        'Entity': 'ගම',
+        f'{data_mode} OPS Score': 'ලකුණු',
+        f'{data_mode} Sign Ups': 'ලියාපදිංචි',
+        f'{data_mode} Applications': 'අයදුම්පත්',
+        f'{data_mode} Approvals': 'අනුමත',
+        f'{data_mode} Applied to Approved Ratio %': 'අය/අනු අනුපාතය %'
+    }
+    
+    # Start building the HTML table
+    html_table = '<table class="dataframe">\n<thead>\n<tr>'
+    
+    # Add custom headers
+    for col in columns_order:
+        html_table += f'<th>{custom_headers.get(col, col)}</th>'
+    
+    html_table += '</tr>\n</thead>\n<tbody>'
+    
+    # Add data rows
+    for _, row in df_with_ranks.iterrows():
+        html_table += '<tr>'
+        for col in columns_order:
+            if col == 'Entity' and isinstance(row[col], str) and ('🥇' in row[col] or '🥈' in row[col] or '🥉' in row[col]):
+                # Handle special Entity column with medals
+                html_table += f'<td>{row[col]}</td>'
+            else:
+                html_table += f'<td>{row[col]}</td>'
+        html_table += '</tr>\n'
+    
+    html_table += '</tbody>\n</table>'
 
-    # Display the HTML table
+    # Display the custom HTML table
     st.markdown(html_table, unsafe_allow_html=True)
 
 def functional_image_rendering(function):
