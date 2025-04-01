@@ -343,13 +343,13 @@ def display_leaderboard_table(df, data_mode):
 
     # Create a custom HTML table with your desired header names
     custom_headers = {
-        'Rank': 'ස්ථානය',
-        'Entity': 'ගම',
-        f'{data_mode} OPS Score': 'ලකුණු',
-        f'{data_mode} Sign Ups': 'ලියාපදිංචි',
-        f'{data_mode} Applications': 'අයදුම්පත්',
-        f'{data_mode} Approvals': 'අනුමත',
-        f'{data_mode} Applied to Approved Ratio %': 'අය/අනු අනුපාතය %'
+        'Rank': 'இடம்',
+        'Entity': 'கிராமம்',
+        f'{data_mode} OPS Score': 'மதிப்பெண்',
+        f'{data_mode} Sign Ups': 'பதிவு',
+        f'{data_mode} Applications': 'விண்ணப்பங்கள்',
+        f'{data_mode} Approvals': 'அங்கீகாரம்',
+        f'{data_mode} Applied to Approved Ratio %': 'விண்/அங்கீ விகிதம் %'
     }
     
     # Start building the HTML table with the upside-down container
