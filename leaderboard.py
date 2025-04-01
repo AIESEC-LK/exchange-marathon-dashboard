@@ -258,58 +258,50 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
                 )
 
 # Function to display the leaderboard table
+# Function to display the leaderboard table
 def display_leaderboard_table(df, data_mode):
-    # Apply custom CSS for styling, including the transform for upside-down effect
+    # Apply custom CSS for styling
     st.markdown(
         """
     <style>
     th, td {
         font-size: 20px !important;
-        padding: 10px;
-        text-align: center;
+        padding: 10px; /* Add padding for better spacing */
+        text-align: center; /* Center-align text */
         font-weight: 900;
-        /* Add transform for upside-down effect */
-        transform: rotate(180deg);
     }
     table {
-        width: 100%;
-        border-collapse: collapse;
-        /* Rotate the entire table */
-        transform: rotate(180deg);
+        width: 100%; /* Full width */
+        border-collapse: collapse; /* Collapse borders */
     }
     th {
-        background-color: #FCFCFC;
-        border: 5px solid #ddd;
+        background-color: #FCFCFC; /* Light gray background for headers */
+        border: 5px solid #ddd; /* Add borders to header */
     }
     td {
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; /* Add borders to cells */
     }
     thead th {
-        background-color: green !important;
-        color: white !important;
-    }
-
-    /* For the entire container to be upside down */
-    .upside-down-container {
-        transform: rotate(180deg);
-        width: 100%;
+        background-color: green !important; /* Set the first row's background color to green */
+        color: white !important; /* Optional: Set text color to white for contrast */
     }
 
     /* Add media queries for responsiveness */
     @media screen and (max-width: 768px) {
         th, td {
-            font-size: 16px !important;
-            padding: 8px;
+            font-size: 16px !important; /* Reduce font size for small screens */
+            padding: 8px; /* Adjust padding for small screens */
         }
     }
 
     @media screen and (max-width: 480px) {
         th, td {
-            font-size: 11px !important;
-            padding: 6px;
+            font-size: 11px !important; /* Further reduce font size for very small screens */
+            padding: 6px; /* Further adjust padding */
         }
     }
 </style>
+
     """, unsafe_allow_html=True)
 
     # Calculate ranks based on scores
@@ -352,8 +344,8 @@ def display_leaderboard_table(df, data_mode):
         f'{data_mode} Applied to Approved Ratio %': 'விண்/அங்கீ விகிதம் %'
     }
     
-    # Start building the HTML table with the upside-down container
-    html_table = '<div class="upside-down-container"><table class="dataframe">\n<thead>\n<tr>'
+    # Start building the HTML table
+    html_table = '<table class="dataframe">\n<thead>\n<tr>'
     
     # Add custom headers
     for col in columns_order:
@@ -372,7 +364,7 @@ def display_leaderboard_table(df, data_mode):
                 html_table += f'<td>{row[col]}</td>'
         html_table += '</tr>\n'
     
-    html_table += '</tbody>\n</table></div>'
+    html_table += '</tbody>\n</table>'
 
     # Display the custom HTML table
     st.markdown(html_table, unsafe_allow_html=True)
