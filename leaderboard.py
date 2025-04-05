@@ -424,6 +424,7 @@ usj_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1efM
 sliit_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1p5n-MQy9BpT90lLk_CvyOC-nOi_dD_7S"
 nibm_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1IEYPQrNErhu2wiQlmYlj35Hc3rpIHRht"
 ruhuna_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1_SU1BEdpLROzWU3e5vll5xcx2S9L9x8V"
+rajarata_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1MXd-6WiUbDgyoiy9UQGg5Or_mk7OrDnb"
 
 # Main Streamlit app
 def main():
@@ -445,7 +446,7 @@ def main():
 
     # col151 = st.columns(1)
     # with col151:
-    st.image(ruhuna_entity_workspace_goodluck_banner, use_column_width=True)
+    st.image(rajarata_entity_workspace_goodluck_banner, use_column_width=True)
 
     st.markdown("<div style='text-align: left;'>"
                 f"<h4>Select the type of data you want to view</h4>"
