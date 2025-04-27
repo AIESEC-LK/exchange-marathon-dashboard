@@ -407,9 +407,9 @@ def radio_button():
 # Replace with your image URL_image_path
 
 icon_path = 'https://lh3.googleusercontent.com/d/19KFA_FrnUb8UVj06EyfhFXdeDa6vVVui'
-mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
-#favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
-favicon_path = 'https://lh3.googleusercontent.com/d/1eR-_6JAUvUNXFVnlOLoamWGOpSRUnJHu'
+#mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
+mascot_image = 'https://lh3.googleusercontent.com/d/1eR-_6JAUvUNXFVnlOLoamWGOpSRUnJH'
+favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
 gta_image_path = "https://lh3.googleusercontent.com/d/1KP_HuRqFjffWIEZsOHqrGh4l7r0YApTv"
 gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gllVDkQfND'
 gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
