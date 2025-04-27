@@ -414,7 +414,8 @@ gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gll
 gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA3bjvSi"
 
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
-title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
+#title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
+title_image_path = "https://lh3.googleusercontent.com/d/1OQPCc3V6LrIgMpX9F3r9ip11WWAQhAUg"
 
 nsbm_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
 kandy_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1lRYiydzs42ipNW6tDKWgPmxMRpOKid0o"
@@ -431,7 +432,7 @@ def main():
     st.set_page_config(
         layout="wide",
         # You can change the page title here
-        page_title="I SEEK Challenge - Dashboard",
+        page_title="Exchange Marathon 2025 - Dashboard",
         page_icon=mascot_image,
     )
 
