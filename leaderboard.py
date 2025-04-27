@@ -456,7 +456,7 @@ def main():
                 unsafe_allow_html=True,)
     data_mode = radio_button()
     # Set interval to 5 minutes
-    st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
+    st_autorefresh(interval=0.5 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
     # Datasource url / Google Sheets CSV
     sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRYaSjBSQCW1Lxpc_52tHI4xejaDr1T6l5tn6rPBqypc3KHqW6ZndobvT7WNkvSP4RzFdDWtS9pJUxG/pub?gid=1455963871&single=true&output=csv"
