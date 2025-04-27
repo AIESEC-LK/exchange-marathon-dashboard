@@ -377,7 +377,7 @@ def radio_button():
      # Check if current time is before or after 8:00 PM
     if now.time() < eight_pm:
         # Before 8 PM: Show data from yesterday 8 PM to current time
-        start_time = (now - timedelta(days=1)).strftime("%d-%m-%Y")
+        start_time = (now).strftime("%d-%m-%Y")#(now - timedelta(days=1)).strftime("%d-%m-%Y")
     else:
         # After 8 PM: Show data from today 8 PM to current time
         start_time = now.strftime("%d-%m-%Y")
@@ -389,8 +389,8 @@ def radio_button():
         ["Total Numbers", "Daily Numbers"],
         captions=[
             # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
-            f'Showing Total Data From 11-03-2025 to Current Time',
-            f'Showing Data Between {start_time} : 8.00 PM -- {end_time} : Current Time'
+            f'Showing Total Data From 27-04-2025 to Current Time',
+            f'Showing Data Between {start_time} : 8.00 AM -- {end_time} : Current Time'
         ],
         horizontal=True,
         label_visibility="collapsed"
