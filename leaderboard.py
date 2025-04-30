@@ -377,7 +377,7 @@ def radio_button():
      # Check if current time is before or after 8:00 PM
     if now.time() < eight_pm:
         # Before 8 PM: Show data from yesterday 8 PM to current time
-        start_time = (now).strftime("%d-%m-%Y")#(now - timedelta(days=1)).strftime("%d-%m-%Y")
+        start_time = (now - timedelta(days=1)).strftime("%d-%m-%Y")
     else:
         # After 8 PM: Show data from today 8 PM to current time
         start_time = now.strftime("%d-%m-%Y")
