@@ -7,6 +7,7 @@ import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
 from datetime import datetime, time, timedelta
 import pytz
+import base64
 
 # Loading Data
 
@@ -430,20 +431,45 @@ rajarata_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d
 
 # Main Streamlit app
 def main():
+
+    with open(title_image_path, "rb") as img_file:
+        mascot_image_base64 = base64.b64encode(img_file.read()).decode()
+        
     st.set_page_config(
         layout="wide",
-        # You can change the page title here
         page_title="Exchange Marathon 2025 - Dashboard",
         page_icon=mascot_image,
     )
-    # Full-width banner image
-    st.image(title_image_path, use_column_width=True)
 
-    # Full-width horizontal rule
-    st.markdown(
-        "<hr style='border: 1px solid #000; width: 100%;'>",
-        unsafe_allow_html=True
-    )
+    # Inject custom CSS for banner styling
+    st.markdown("""
+        <style>
+        .banner-container {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .divider {
+            border: 1px solid #000;
+            width: 100%;
+            margin-top: 10px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Full-width image with custom styling
+    st.markdown(f"""
+        <div class="banner-container">
+            <img src="data:image/png;base64,{mascot_image_base64}" class="banner-img" alt="Banner">
+        </div>
+        <hr class="divider">
+    """, unsafe_allow_html=True)
+    
     '''
     col100, col101, col102 = st.columns([1, 18, 1])
     with col101:
