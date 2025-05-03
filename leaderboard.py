@@ -437,7 +437,7 @@ def main():
         page_icon=mascot_image,
     )
 
-    col100, col101, col102 = st.columns([1, 1, 1])
+    col100, col101, col102 = st.columns([1, 8, 1])
     with col101:
         st.image(title_image_path,use_column_width=True)
 
