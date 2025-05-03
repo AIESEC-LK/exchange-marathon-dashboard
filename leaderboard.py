@@ -438,13 +438,13 @@ def main():
     )
 
     col100, col101, col102 = st.columns([1, 5, 1])
-    with col101:
-        st.image(title_image_path,use_column_width=True)
+    #with col101:
+        #st.image(title_image_path,use_column_width=True)
 
-    st.markdown(
-        "<hr style='border: 1px solid #000; width: 100%;'>",
-        unsafe_allow_html=True
-    )
+    #st.markdown(
+        #"<hr style='border: 1px solid #000; width: 100%;'>",
+        #unsafe_allow_html=True
+    #)
 
     # col151 = st.columns(1)
     # with col151:
