@@ -436,7 +436,15 @@ def main():
         page_title="Exchange Marathon 2025 - Dashboard",
         page_icon=mascot_image,
     )
+    # Full-width banner image
+    st.image(title_image_path, use_column_width=True)
 
+    # Full-width horizontal rule
+    st.markdown(
+        "<hr style='border: 1px solid #000; width: 100%;'>",
+        unsafe_allow_html=True
+    )
+    '''
     col100, col101, col102 = st.columns([1, 18, 1])
     with col101:
         st.image(title_image_path,use_column_width=True)
@@ -445,7 +453,8 @@ def main():
         "<hr style='border: 1px solid #000; width: 100%;'>",
         unsafe_allow_html=True
     )
-
+    '''
+    
     # col151 = st.columns(1)
     # with col151:
     #st.image(rajarata_entity_workspace_goodluck_banner, use_column_width=True)
