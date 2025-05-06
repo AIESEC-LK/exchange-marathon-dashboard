@@ -408,8 +408,9 @@ def radio_button():
 # Replace with your image URL_image_path
 
 icon_path = 'https://lh3.googleusercontent.com/d/19KFA_FrnUb8UVj06EyfhFXdeDa6vVVui'
-#mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod'
-mascot_image = 'https://lh3.googleusercontent.com/d/1eR-_6JAUvUNXFVnlOLoamWGOpSRUnJHu'
+# mascot_image = 'https://lh3.googleusercontent.com/d/1undYpxuWYWLP3A0uH1XvUJRCnNIkXpod' #iseeek
+# mascot_image = 'https://lh3.googleusercontent.com/d/1eR-_6JAUvUNXFVnlOLoamWGOpSRUnJHu' #natcon
+mascot_image = 'https://lh3.googleusercontent.com/d/1OasiX9Kt2T5YswXojmmro6ytw6hUZEEI' #ex marathon
 favicon_path = 'https://lh3.googleusercontent.com/d/1Fide8c8sEd6-SLiA_bS3lVr93OOCw9Mw'
 gta_image_path = "https://lh3.googleusercontent.com/d/1KP_HuRqFjffWIEZsOHqrGh4l7r0YApTv"
 gte_image_path = 'https://lh3.googleusercontent.com/d/1pO8mI2dVEqNBHWXhz_hNP7gllVDkQfND'
@@ -417,7 +418,8 @@ gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA
 
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
 #title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
-title_image_path = "https://lh3.googleusercontent.com/d/1OQPCc3V6LrIgMpX9F3r9ip11WWAQhAUg"
+# title_image_path = "https://lh3.googleusercontent.com/d/1OQPCc3V6LrIgMpX9F3r9ip11WWAQhAUg" #natcon
+title_image_path = "https://lh3.googleusercontent.com/d/1cWW12jLzJ1Rmzw00BckeBHkUUcRaNSk6" #natcon
 
 nsbm_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
 kandy_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1lRYiydzs42ipNW6tDKWgPmxMRpOKid0o"
@@ -438,9 +440,9 @@ def main():
         page_icon=mascot_image,
     )
     
-    col100, col101, col102 = st.columns([1, 18, 1])
-    with col101:
-        st.image(title_image_path,use_column_width=True)
+    # col100, col101, col102 = st.columns([1, 18, 1])
+    # with col101:
+    st.image(title_image_path,use_column_width=True)
 
     st.markdown(
         "<hr style='border: 1px solid #000; width: 100%;'>",
