@@ -191,9 +191,9 @@ def mou_bar_chart_and_data(data, data_mode):
     df_entity_sus_total.reset_index(inplace=True)
     df_entity_sus_total.rename(columns={'index': 'Entity'}, inplace=True)
 
-    fig_sus = px.bar(df_entity_sus_total, x='Entity', y='Total_SUs', 
+    fig_sus = px.bar(df_entity_sus_total, x='Entity', y='Total_MoUs', 
                      title=f'📩 {data_mode} SUs by Entity', 
-                     labels={'Entity': 'Entity', 'Total_MoUs': 'MoUs'}, 
+                     labels={'Entity': 'Entity', 'Total_MoUs': 'Total MoUs'}, 
                      color='Entity')
 
     functional_bar_charts_formatting(fig_sus)
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
