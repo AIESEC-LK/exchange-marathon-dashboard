@@ -322,7 +322,7 @@ def display_leaderboard_table(df, data_mode):
     # Specify the order of columns explicitly
     # Make sure that the columns listed here match your DataFrame
     columns_order = ['Rank', 'Entity', f'{data_mode} OPS Score',
-                     f'{data_mode} Applications', f'{data_mode} Approvals', f'{data_mode} MoUs]
+                     f'{data_mode} Applications', f'{data_mode} Approvals', f'{data_mode} MoUs']
 
     # Check if all specified columns exist in the DataFrame
     for col in columns_order:
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
