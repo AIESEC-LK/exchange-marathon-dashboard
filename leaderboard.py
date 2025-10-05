@@ -385,17 +385,17 @@ def radio_button():
  
     end_time = now.strftime("%d-%m-%Y")
     
-    data_type = st.radio(
-        "",
-        ["Total Numbers", "Daily Numbers"],
-        captions=[
-            # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
-            f'Showing Total Data From 27-04-2025 to Current Time',
-            f'Showing Data Between {start_time} : 8.00 PM -- {end_time} : Current Time'
-        ],
-        horizontal=True,
-        label_visibility="collapsed"
-    )
+    # data_type = st.radio(
+    #     "",
+    #     ["Total Numbers", "Daily Numbers"],
+    #     captions=[
+    #         # f'Showing Total Data From 11-03-2025 to {today_gmt_530}',
+    #         f'Showing Total Data From 27-04-2025 to Current Time',
+    #         f'Showing Data Between {start_time} : 8.00 PM -- {end_time} : Current Time'
+    #     ],
+    #     horizontal=True,
+    #     label_visibility="collapsed"
+    # )
 
     # if data_type == "Total Numbers":
     data_mode = "Total"
@@ -487,10 +487,10 @@ def main():
             # Calculate total values
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
-            total_sus = df_entity_sus_total['Total_SUs'].sum()
+            # total_sus = df_entity_sus_total['Total_SUs'].sum()
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
-            display_summary_numbers(total_sus, total_approved, total_applied, data_mode)
+            display_summary_numbers(total_approved, total_applied, data_mode)
      
             st.divider()
 
@@ -619,5 +619,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
