@@ -419,7 +419,7 @@ gv_image_path = "https://lh3.googleusercontent.com/d/1P_mg-0qWhpPp2bs9_XlgDru_YA
 # title_image_path = "https://lh3.googleusercontent.com/d/1UVGBInlNXFd6Q6m5tLeRJfh21OMkjhi2"
 #title_image_path = "https://lh3.googleusercontent.com/d/1nPlofkBrZWqdMomRwRm3gOzVp3hDQ1GF"
 # title_image_path = "https://lh3.googleusercontent.com/d/1OQPCc3V6LrIgMpX9F3r9ip11WWAQhAUg" #natcon
-title_image_path = "https://lh3.googleusercontent.com/d/1cWW12jLzJ1Rmzw00BckeBHkUUcRaNSk6" #natcon
+title_image_path = "https://lh3.googleusercontent.com/d/1s4U1LoOU9PTckAb1r3iWIENlv2ZYGUcN" #nlds
 
 nsbm_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1Z9mSOFgTgZ9OnsQQDbnh0GbtRfywRM4z"
 kandy_entity_workspace_goodluck_banner = "https://lh3.googleusercontent.com/d/1lRYiydzs42ipNW6tDKWgPmxMRpOKid0o"
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
