@@ -398,11 +398,11 @@ def radio_button():
     )
 
     # if data_type == "Total Numbers":
-    #     data_mode = "Total"
+    data_mode = "Total"
     # elif data_type == "Daily Numbers":
     #     data_mode = "Daily"
 
-    return data_mode="Total"
+    return data_mode
 
 # Functional Image Rendaring
 # Replace with your image URL_image_path
@@ -619,4 +619,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
