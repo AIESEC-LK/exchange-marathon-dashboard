@@ -499,114 +499,114 @@ def main():
             # Display the leaderboard table
             display_leaderboard_table(df_combined, data_mode)
 
-            st.divider()
+            # st.divider()
 
-            col204, col205 = st.columns([1, 1])
+            # col204, col205 = st.columns([1, 1])
 
-            # applied bar chart
-            # with col204:
-            #     st.plotly_chart(fig_sus, use_container_width=True)
+            # # applied bar chart
+            # # with col204:
+            # #     st.plotly_chart(fig_sus, use_container_width=True)
 
-            # approved bar chart
-            with col205:
-                st.plotly_chart(fig_applied, use_container_width=True)
+            # # approved bar chart
+            # with col205:
+            #     st.plotly_chart(fig_applied, use_container_width=True)
 
-            col206, col207 = st.columns([1, 1])
+            # col206, col207 = st.columns([1, 1])
 
-            # applied to approved ratio bar chart
-            with col206:
-                st.plotly_chart(fig_approved, use_container_width=True)
+            # # applied to approved ratio bar chart
+            # with col206:
+            #     st.plotly_chart(fig_approved, use_container_width=True)
 
-            with col207:
-                st.plotly_chart(fig_apltoapd, use_container_width=True)
+            # with col207:
+            #     st.plotly_chart(fig_apltoapd, use_container_width=True)
 
-            ###############################################################################
+            # ###############################################################################
 
-            st.divider()
+            # st.divider()
 
-            col11, col12 = st.columns([9, 2])
+            # col11, col12 = st.columns([9, 2])
 
-            with col11:
+            # with col11:
 
-                st.subheader('Functional Analysis')
-                # Create a select box to choose the 'Function'
-                selected_function = st.selectbox(
-                    'Select Function', data['Function'].unique())
+            #     st.subheader('Functional Analysis')
+            #     # Create a select box to choose the 'Function'
+            #     selected_function = st.selectbox(
+            #         'Select Function', data['Function'].unique())
 
-            with col12:
-                functional_image_rendering(selected_function)
+            # with col12:
+            #     functional_image_rendering(selected_function)
             
-            SU_counts = count_SUs_by_entity(data, selected_function, data_mode)
-            fig_0 = px.bar(SU_counts, x='Entity', y='Count_SUs',
-                           title=f'📩 {data_mode} Sign Ups by Entity for {selected_function} Function',
-                           labels={'Entity': 'Entity', 'Count_SUs': 'Sign Ups'}, color='Entity')
+            # SU_counts = count_SUs_by_entity(data, selected_function, data_mode)
+            # fig_0 = px.bar(SU_counts, x='Entity', y='Count_SUs',
+            #                title=f'📩 {data_mode} Sign Ups by Entity for {selected_function} Function',
+            #                labels={'Entity': 'Entity', 'Count_SUs': 'Sign Ups'}, color='Entity')
             
-            functional_bar_charts_formatting(fig_0)
+            # functional_bar_charts_formatting(fig_0)
 
-            # Get the count of 'Applied' related to each entity based on the selected function
-            applied_counts = count_applied_by_entity(data, selected_function, data_mode)
+            # # Get the count of 'Applied' related to each entity based on the selected function
+            # applied_counts = count_applied_by_entity(data, selected_function, data_mode)
 
-            # Create a bar chart using Plotly Express
-            fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', 
-                           title=f'🌍 {data_mode} Applications by Entity for {selected_function} Function', 
-                           labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
+            # # Create a bar chart using Plotly Express
+            # fig_1 = px.bar(applied_counts, x='Entity', y='Count_Applied', 
+            #                title=f'🌍 {data_mode} Applications by Entity for {selected_function} Function', 
+            #                labels={'Entity': 'Entity', 'Count_Applied': 'Applications'}, color='Entity')
             
-            functional_bar_charts_formatting(fig_1)
+            # functional_bar_charts_formatting(fig_1)
 
-            # Get the count of 'Approved' related to each entity based on the selected function
-            approved_counts = count_approved_by_entity(data, selected_function, data_mode)
+            # # Get the count of 'Approved' related to each entity based on the selected function
+            # approved_counts = count_approved_by_entity(data, selected_function, data_mode)
 
-            # Create a bar chart using Plotly Express
-            fig_2 = px.bar(approved_counts, x='Entity', y='Count_Approved', 
-                           title=f'✅ {data_mode} Approvals by Entity for {selected_function} Function',
-                           labels={'Entity': 'Entity', 'Count_Approved': 'Approvals'}, color='Entity')
+            # # Create a bar chart using Plotly Express
+            # fig_2 = px.bar(approved_counts, x='Entity', y='Count_Approved', 
+            #                title=f'✅ {data_mode} Approvals by Entity for {selected_function} Function',
+            #                labels={'Entity': 'Entity', 'Count_Approved': 'Approvals'}, color='Entity')
             
-            functional_bar_charts_formatting(fig_2)
+            # functional_bar_charts_formatting(fig_2)
 
-            applied_to_approved_percent = count_applied_to_approved_ratio(
-                data, selected_function, data_mode)
+            # applied_to_approved_percent = count_applied_to_approved_ratio(
+            #     data, selected_function, data_mode)
 
-            # Create a bar chart using Plotly Express
-            fig_3 = px.bar(applied_to_approved_percent, x='Entity', y='Applied_to_Approved_Ratio', 
-                           title=f'📊 {data_mode} Applied to Approved Ratio by Entity for {selected_function} Function',
-                           labels={'Entity': 'Entity', 'Applied_to_Approved_Ratio': 'Applied to Approved Ratio'}, color='Entity')
+            # # Create a bar chart using Plotly Express
+            # fig_3 = px.bar(applied_to_approved_percent, x='Entity', y='Applied_to_Approved_Ratio', 
+            #                title=f'📊 {data_mode} Applied to Approved Ratio by Entity for {selected_function} Function',
+            #                labels={'Entity': 'Entity', 'Applied_to_Approved_Ratio': 'Applied to Approved Ratio'}, color='Entity')
 
-            functional_bar_charts_formatting(fig_3)
+            # functional_bar_charts_formatting(fig_3)
         
-            ###############################################################################
-            if selected_function == "oGV" or selected_function == "oGTa" or selected_function == "oGTe":
-                # st.write("<br><br>", unsafe_allow_html=True)
-                col301, col302 = st.columns(2)
+            # ###############################################################################
+            # if selected_function == "oGV" or selected_function == "oGTa" or selected_function == "oGTe":
+            #     # st.write("<br><br>", unsafe_allow_html=True)
+            #     col301, col302 = st.columns(2)
 
-                with col301:
-                    st.plotly_chart(fig_0, use_container_width=True)
+            #     with col301:
+            #         st.plotly_chart(fig_0, use_container_width=True)
 
-                with col302:
-                    st.plotly_chart(fig_1, use_container_width=True)
+            #     with col302:
+            #         st.plotly_chart(fig_1, use_container_width=True)
 
-                col311, col312 = st.columns(2)
+            #     col311, col312 = st.columns(2)
 
-                with col311:
-                    st.plotly_chart(fig_2, use_container_width=True)
+            #     with col311:
+            #         st.plotly_chart(fig_2, use_container_width=True)
 
-                with col312:
-                    st.plotly_chart(fig_3, use_container_width=True)
+            #     with col312:
+            #         st.plotly_chart(fig_3, use_container_width=True)
             
-            else:
-                col5, col6 = st.columns(2)
+            # else:
+            #     col5, col6 = st.columns(2)
 
-                with col5:
-                    st.plotly_chart(fig_1, use_container_width=True)
+            #     with col5:
+            #         st.plotly_chart(fig_1, use_container_width=True)
 
-                with col6:
-                    st.plotly_chart(fig_2, use_container_width=True)
+            #     with col6:
+            #         st.plotly_chart(fig_2, use_container_width=True)
 
-                col13, col14, col15 = st.columns([1, 2, 1])
+            #     col13, col14, col15 = st.columns([1, 2, 1])
 
-                with col14:
-                    st.plotly_chart(fig_3, use_container_width=True)
+            #     with col14:
+            #         st.plotly_chart(fig_3, use_container_width=True)
 
-            st.write("<br>", unsafe_allow_html=True)
+            # st.write("<br>", unsafe_allow_html=True)
             st.divider()
 
             # st.write("<br><br>", unsafe_allow_html=True)
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
