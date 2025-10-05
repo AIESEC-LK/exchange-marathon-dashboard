@@ -312,7 +312,7 @@ def display_leaderboard_table(df, data_mode):
         'Total': f'{data_mode} OPS Score',
         'Total_Approved': f'{data_mode} Approvals',
         'Total_Applied': f'{data_mode} Applications'
-        # 'Total_SUs': f'{data_mode} Sign Ups',
+        'Total_MoUs': f'{data_mode} MoUs',
         # 'APL_to_APD': f'{data_mode} Applied to Approved Ratio %'
     }, inplace=True)
 
@@ -453,10 +453,10 @@ def main():
     # with col151:
     #st.image(rajarata_entity_workspace_goodluck_banner, use_column_width=True)
 
-    st.markdown("<div style='text-align: left;'>"
-                f"<h4>Select the type of data you want to view</h4>"
-                "</div>",
-                unsafe_allow_html=True,)
+    # st.markdown("<div style='text-align: left;'>"
+    #             f"<h4>Select the type of data you want to view</h4>"
+    #             "</div>",
+    #             unsafe_allow_html=True,)
     data_mode = radio_button()
     # Set interval to 5 minutes
     st_autorefresh(interval=1 * 60 * 1000, key="data_refresh")
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
