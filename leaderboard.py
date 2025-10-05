@@ -212,21 +212,21 @@ def total_points(data, data_mode):
     return df_entity_points_total
 
 # display summary details (on the top of the page)
-def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode):
+def display_summary_numbers(total_approved, total_applied, data_mode):
     # Calculate the conversion rate, with a check for division by zero
             conversion_rate = round(total_approved / total_applied, 2) if total_applied != 0 else 0
 
             # Define a layout with two columns
-            col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+            col2, col3 = st.columns([1, 1])
 
-            with col1:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>📩 {data_mode} Sign Ups</h3>"
-                    f"<p style='font-size: 32px;'>{total_SUs}</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
+            # with col1:
+            #     st.markdown(
+            #         "<div style='text-align: center;'>"
+            #         f"<h3>📩 {data_mode} Sign Ups</h3>"
+            #         f"<p style='font-size: 32px;'>{total_SUs}</p>"
+            #         "</div>",
+            #         unsafe_allow_html=True,
+            #     )
 
             # Display the total applications in the first column
             with col2:
@@ -249,14 +249,14 @@ def display_summary_numbers(total_SUs, total_approved, total_applied, data_mode)
                 )
 
             # Display the conversion rate in the third column
-            with col4:
-                st.markdown(
-                    "<div style='text-align: center;'>"
-                    f"<h3>📊 {data_mode} Applied to Approved Coversion Rate</h3>"
-                    f"<p style='font-size: 32px;'>{round(conversion_rate*100,2)} %</p>"
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
+            # with col4:
+            #     st.markdown(
+            #         "<div style='text-align: center;'>"
+            #         f"<h3>📊 {data_mode} Applied to Approved Coversion Rate</h3>"
+            #         f"<p style='font-size: 32px;'>{round(conversion_rate*100,2)} %</p>"
+            #         "</div>",
+            #         unsafe_allow_html=True,
+            #     )
 
 # Function to display the leaderboard table
 def display_leaderboard_table(df, data_mode):
@@ -504,8 +504,8 @@ def main():
             col204, col205 = st.columns([1, 1])
 
             # applied bar chart
-            with col204:
-                st.plotly_chart(fig_sus, use_container_width=True)
+            # with col204:
+            #     st.plotly_chart(fig_sus, use_container_width=True)
 
             # approved bar chart
             with col205:
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
