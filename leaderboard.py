@@ -462,7 +462,7 @@ def main():
     st_autorefresh(interval=1 * 60 * 1000, key="data_refresh")
     # URL to your Google Sheets data
     # Datasource url / Google Sheets CSV
-    sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRYaSjBSQCW1Lxpc_52tHI4xejaDr1T6l5tn6rPBqypc3KHqW6ZndobvT7WNkvSP4RzFdDWtS9pJUxG/pub?gid=1455963871&single=true&output=csv"
+    sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSid0QnQOYSzZBEtZHwGhzkgdFF7pcxHxs8evjsqZ9H4vspzUlAg8JcuRNNj56XZZtnIxwlasRxjYhg/pub?gid=2141420671&single=true&output=csv"
 
     # Load data using the cached function
     data = load_data(sheet_url)
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
