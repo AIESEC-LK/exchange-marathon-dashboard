@@ -397,12 +397,12 @@ def radio_button():
         label_visibility="collapsed"
     )
 
-    if data_type == "Total Numbers":
-        data_mode = "Total"
-    elif data_type == "Daily Numbers":
-        data_mode = "Daily"
+    # if data_type == "Total Numbers":
+    #     data_mode = "Total"
+    # elif data_type == "Daily Numbers":
+    #     data_mode = "Daily"
 
-    return data_mode
+    return data_mode="Total"
 
 # Functional Image Rendaring
 # Replace with your image URL_image_path
@@ -436,7 +436,7 @@ def main():
         
     st.set_page_config(
         layout="wide",
-        page_title="Exchange Marathon 2025 - Dashboard",
+        page_title="NLDS2025 Hackathon",
         page_icon=mascot_image,
     )
     
@@ -619,3 +619,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
