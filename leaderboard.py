@@ -487,7 +487,7 @@ def main():
             # Calculate total values
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
-            total_sus = df_entity_mou_total['Total_SUs'].sum()
+            total_mou = df_entity_mou_total['Total_MoUs'].sum()
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
             display_summary_numbers(total_mou, total_approved, total_applied, data_mode)
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
