@@ -47,11 +47,11 @@ def calculate_total_approved(df, data_mode):
     return entity_approved_total
 
 # Function to calculate the total SUs related to each entity
-def calculate_total_sus(df, data_mode):
+def calculate_total_mou(df, data_mode):
     entity_sus_total = {}
     for index, row in df.iterrows():
         entity = row['Entity']
-        sus = row[f'{data_mode} SUs']
+        sus = row[f'{data_mode} MoUs']
         if entity not in entity_sus_total:
             entity_sus_total[entity] = sus
         else:
@@ -183,17 +183,17 @@ def applied_to_approved_ratio_bar_chart_and_data(df_entity_apd_total, df_entity_
     return fig_apl_to_apd, apl_to_apd
 
 # Function to create total SUs bar chart and data
-def sus_bar_chart_and_data(data, data_mode):
-    entity_sus_total = calculate_total_sus(data, data_mode)
+def mou_bar_chart_and_data(data, data_mode):
+    entity_sus_total = calculate_total_mou(data, data_mode)
 
     df_entity_sus_total = pd.DataFrame.from_dict(
-        entity_sus_total, orient='index', columns=['Total_SUs'])
+        entity_sus_total, orient='index', columns=['Total_MoUs'])
     df_entity_sus_total.reset_index(inplace=True)
     df_entity_sus_total.rename(columns={'index': 'Entity'}, inplace=True)
 
     fig_sus = px.bar(df_entity_sus_total, x='Entity', y='Total_SUs', 
                      title=f'📩 {data_mode} SUs by Entity', 
-                     labels={'Entity': 'Entity', 'Total_SUs': 'SUs'}, 
+                     labels={'Entity': 'Entity', 'Total_MoUs': 'MoUs'}, 
                      color='Entity')
 
     functional_bar_charts_formatting(fig_sus)
@@ -212,12 +212,12 @@ def total_points(data, data_mode):
     return df_entity_points_total
 
 # display summary details (on the top of the page)
-def display_summary_numbers(total_approved, total_applied, data_mode):
+def display_summary_numbers(total_mou, total_approved, total_applied, data_mode):
     # Calculate the conversion rate, with a check for division by zero
             conversion_rate = round(total_approved / total_applied, 2) if total_applied != 0 else 0
 
             # Define a layout with two columns
-            col2, col3 = st.columns([1, 1])
+            col2, col3, col4 = st.columns([1, 1, 1])
 
             # with col1:
             #     st.markdown(
@@ -249,14 +249,14 @@ def display_summary_numbers(total_approved, total_applied, data_mode):
                 )
 
             # Display the conversion rate in the third column
-            # with col4:
-            #     st.markdown(
-            #         "<div style='text-align: center;'>"
-            #         f"<h3>📊 {data_mode} Applied to Approved Coversion Rate</h3>"
-            #         f"<p style='font-size: 32px;'>{round(conversion_rate*100,2)} %</p>"
-            #         "</div>",
-            #         unsafe_allow_html=True,
-            #     )
+            with col4:
+                st.markdown(
+                    "<div style='text-align: center;'>"
+                    f"<h3>📊 {data_mode} MoUs</h3>"
+                    f"<p style='font-size: 32px;'>{total_mou} %</p>"
+                    "</div>",
+                    unsafe_allow_html=True,
+                )
 
 # Function to display the leaderboard table
 def display_leaderboard_table(df, data_mode):
@@ -474,23 +474,23 @@ def main():
             # calculation of leaderboard items
             fig_applied, df_entity_applied_total = applied_bar_chart_and_data(data, data_mode)
             fig_approved, df_entity_approved_total = approved_bar_chart_and_data(data, data_mode)
-            fig_sus, df_entity_sus_total = sus_bar_chart_and_data(data, data_mode)
+            fig_sus, df_entity_mou_total = mou_bar_chart_and_data(data, data_mode)
             fig_apltoapd, df_entity_apltoapd_total = applied_to_approved_ratio_bar_chart_and_data(df_entity_approved_total, df_entity_applied_total, data_mode)
             df_ranks = total_points(data, data_mode)
 
         # Merge all datasets
             df_combined = df_entity_applied_total.merge(
                 df_entity_approved_total, on='Entity').merge(
-                    df_entity_sus_total, on='Entity').merge(
+                    df_entity_mou_total, on='Entity').merge(
                         df_entity_apltoapd_total, on='Entity').merge(df_ranks, on='Entity')
 
             # Calculate total values
             total_approved = df_entity_approved_total['Total_Approved'].sum()
             total_applied = df_entity_applied_total['Total_Applied'].sum()
-            # total_sus = df_entity_sus_total['Total_SUs'].sum()
+            total_sus = df_entity_mou_total['Total_SUs'].sum()
 
             # Display the summary numbers (total applications, total approvals, and conversion rate)
-            display_summary_numbers(total_approved, total_applied, data_mode)
+            display_summary_numbers(total_mou, total_approved, total_applied, data_mode)
      
             st.divider()
 
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
