@@ -311,7 +311,7 @@ def display_leaderboard_table(df, data_mode):
     df_with_ranks.rename(columns={
         'Total': f'{data_mode} OPS Score',
         'Total_Approved': f'{data_mode} Approvals',
-        'Total_Applied': f'{data_mode} Applications'
+        'Total_Applied': f'{data_mode} Applications',
         'Total_MoUs': f'{data_mode} MoUs',
         # 'APL_to_APD': f'{data_mode} Applied to Approved Ratio %'
     }, inplace=True)
@@ -619,6 +619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
