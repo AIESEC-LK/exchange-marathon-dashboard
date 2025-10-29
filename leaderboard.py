@@ -9,6 +9,51 @@ from datetime import datetime, time, timedelta
 import pytz
 import base64
 
+# Simple CSS animations to improve UI (fade/slide/pulse). Uses only CSS so no new deps required.
+ANIMATIONS_CSS = """
+<style>
+/* Fade in + slide up */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 700ms ease-out both; }
+.delay-1 { animation-delay: 120ms; }
+.delay-2 { animation-delay: 240ms; }
+.delay-3 { animation-delay: 360ms; }
+
+/* Gentle pulse for icons */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+.pulse { animation: pulse 2.5s ease-in-out infinite; }
+
+/* Header underline gradient */
+.header-gradient { height: 6px; background: linear-gradient(90deg, #00b4d8, #0077b6, #90e0ef); border-radius: 6px; margin-top: 8px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+
+/* Card-like summary styling */
+.anim-card { padding: 6px 12px; border-radius: 8px; transition: box-shadow .2s ease; }
+.anim-card:hover { box-shadow: 0 8px 24px rgba(16,24,40,0.08); }
+
+/* Slightly animate table appearance */
+.table-wrapper { animation: fadeInUp 900ms cubic-bezier(.2,.9,.2,1) both; }
+
+/* Make sure Streamlit's table HTML doesn't break layout */
+.dataframe { width: 100% !important; }
+</style>
+"""
+
+# Simple HTML/CSS loader (no external deps). Use a placeholder to render while data is fetched.
+LOADER_HTML = """
+<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;">
+    <div style="width:96px;height:96px;border-radius:50%;border:8px solid rgba(0,0,0,0.08);border-top-color:#0077b6;animation:spin 1s linear infinite;margin-bottom:12px;border-left-color: #00b4d8;border-right-color: #90e0ef;"></div>
+    <div style="font-size:18px;color:#111;font-weight:700;">Loading Exchange Marathon data…</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+"""
+
 # Loading Data
 
 
@@ -231,9 +276,9 @@ def display_summary_numbers(total_mou, total_approved, total_applied, data_mode)
             # Display the total applications in the first column
             with col2:
                 st.markdown(
-                    "<div style='text-align: center;'>"
+                    "<div class='anim-card fade-in delay-1' style='text-align: center;'>"
                     f"<h3>🌍 {data_mode} Applications</h3>"
-                    f"<p style='font-size: 32px;'>{total_applied}</p>"
+                    f"<p style='font-size: 32px;margin:6px 0 0 0'>{total_applied}</p>"
                     "</div>",
                     unsafe_allow_html=True,
                 )
@@ -241,9 +286,9 @@ def display_summary_numbers(total_mou, total_approved, total_applied, data_mode)
             # Display the total approvals in the second column
             with col3:
                 st.markdown(
-                    "<div style='text-align: center;'>"
+                    "<div class='anim-card fade-in delay-2' style='text-align: center;'>"
                     f"<h3>✅ {data_mode} Approvals</h3>"
-                    f"<p style='font-size: 32px;'>{total_approved}</p>"
+                    f"<p style='font-size: 32px;margin:6px 0 0 0'>{total_approved}</p>"
                     "</div>",
                     unsafe_allow_html=True,
                 )
@@ -251,9 +296,9 @@ def display_summary_numbers(total_mou, total_approved, total_applied, data_mode)
             # Display the conversion rate in the third column
             with col4:
                 st.markdown(
-                    "<div style='text-align: center;'>"
+                    "<div class='anim-card fade-in delay-3' style='text-align: center;'>"
                     f"<h3>📊 {data_mode} MoUs</h3>"
-                    f"<p style='font-size: 32px;'>{total_mou} </p>"
+                    f"<p style='font-size: 32px;margin:6px 0 0 0'>{total_mou} </p>"
                     "</div>",
                     unsafe_allow_html=True,
                 )
@@ -304,6 +349,9 @@ def display_leaderboard_table(df, data_mode):
 
     """, unsafe_allow_html=True)
 
+    # Add the animation CSS to the page
+    st.markdown(ANIMATIONS_CSS, unsafe_allow_html=True)
+
     # Calculate ranks based on scores
     df_with_ranks = display_score_ranks(df)
 
@@ -337,8 +385,9 @@ def display_leaderboard_table(df, data_mode):
     html_table = df_with_ranks.to_html(
         classes='dataframe', index=False, escape=False)
 
-    # Display the HTML table
-    st.markdown(html_table, unsafe_allow_html=True)
+    # Display the HTML table wrapped so the CSS animation applies
+    wrapped = f"<div class='table-wrapper fade-in delay-2'>{html_table}</div>"
+    st.markdown(wrapped, unsafe_allow_html=True)
 
 def functional_image_rendering(function):
     if (function == "oGV" or function == "iGV"):
@@ -436,7 +485,7 @@ def main():
         
     st.set_page_config(
         layout="wide",
-        page_title="NLDS2025 Hackathon",
+        page_title="Exchange Marathon 2025",
         page_icon=mascot_image,
     )
     
@@ -464,8 +513,18 @@ def main():
     # Datasource url / Google Sheets CSV
     sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSid0QnQOYSzZBEtZHwGhzkgdFF7pcxHxs8evjsqZ9H4vspzUlAg8JcuRNNj56XZZtnIxwlasRxjYhg/pub?gid=2141420671&single=true&output=csv"
 
+    # Add global animations CSS early so loader and other elements can use it
+    st.markdown(ANIMATIONS_CSS, unsafe_allow_html=True)
+
+    # Show a custom loader while fetching data (placed so it can be cleared)
+    loader_placeholder = st.empty()
+    loader_placeholder.markdown(LOADER_HTML, unsafe_allow_html=True)
+
     # Load data using the cached function
     data = load_data(sheet_url)
+
+    # Remove loader once data has loaded (or failed)
+    loader_placeholder.empty()
 
     if data is not None:
         # Check if the 'Entity' column exists in the DataFrame
